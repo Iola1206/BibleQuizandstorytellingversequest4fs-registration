@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VerseQuest4Fs — Pilot Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+
+  <!--
+    EmailJS browser SDK — loaded as a standard script tag in the head
+    so it is guaranteed to be ready before any form submission fires.
+    The 'data-cfasync="false"' attribute tells Cloudflare NOT to rewrite
+    or defer this script, preventing the interference that caused the
+    "Something Went Wrong" error on GitHub Pages.
+  -->
+  <script data-cfasync="false" type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+  </script>
+
+  <style>
+    :root {
+      --navy:       #1B3A6B;
+      --navy-deep:  #0F2347;
+      --gold:       #C9A84C;
+      --gold-light: #F0D080;
+      --gold-pale:  #FDF6E3;
+      --cream:      #FAFAF5;
+      --ink:        #2A2A2A;
+      --muted:      #6B6B6B;
+      --border:     #D8CCB0;
+      --error:      #B83232;
+      --success:    #2E7D52;
+      --white:      #FFFFFF;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--navy-deep);
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(27,58,107,0.6) 0%, transparent 55%);
+      min-height: 100vh;
+      font-family: 'Crimson Pro', Georgia, serif;
+      color: var(--ink);
+      padding: 40px 20px 80px;
+    }
+    .page-wrapper { max-width: 720px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    .header { text-align: center; margin-bottom: 40px; animation: fadeDown 0.8s ease both; }
+    .header-badge {
+      display: inline-block; font-family: 'Crimson Pro', serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid rgba(201,168,76,0.4);
+      padding: 6px 20px; border-radius: 2px; margin-bottom: 12px;
+      background: rgba(201,168,76,0.05);
+    }
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 7vw, 62px); font-weight: 900;
+      color: var(--gold); letter-spacing: -0.02em; line-height: 1;
+      display: block; margin-bottom: 6px;
+      text-shadow: 0 0 40px rgba(201,168,76,0.3);
+    }
+    .brand-title span { color: var(--white); }
+    .header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(15px, 3vw, 20px); font-weight: 400; font-style: italic;
+      color: rgba(255,255,255,0.75); line-height: 1.3; margin-bottom: 6px;
+    }
+    .four-fs-tagline {
+      font-family: 'Crimson Pro', serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(201,168,76,0.7); display: block; margin-bottom: 14px;
+    }
+    .header-divider {
+      display: flex; align-items: center; justify-content: center; gap: 12px; margin: 12px 0;
+    }
+    .header-divider::before, .header-divider::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+    }
+    .header-divider::after { background: linear-gradient(to left, transparent, var(--gold)); }
+    .header-divider span { color: var(--gold); font-size: 16px; }
+    .header-sub { font-size: 16px; color: rgba(255,255,255,0.6); font-style: italic; font-weight: 300; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--cream); border-radius: 4px; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.2);
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    /* ── HERO BANNER ── */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 60%, #1e4a8a 100%);
+      padding: 28px 40px; border-bottom: 3px solid var(--gold);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::before {
+      content: '✦'; position: absolute; font-size: 200px;
+      color: rgba(201,168,76,0.04); right: -20px; top: -40px; font-family: serif; line-height: 1;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .hero-item { display: flex; align-items: flex-start; gap: 10px; }
+    .hero-icon { font-size: 18px; margin-top: 2px; flex-shrink: 0; }
+    .hero-item-label {
+      font-family: 'Crimson Pro', serif; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+      display: block; margin-bottom: 2px;
+    }
+    .hero-item-value { font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 300; line-height: 1.4; }
+    .hero-item-value.urgent { color: #FF9B9B; font-weight: 700; }
+    .hero-item-value.prize  { color: var(--gold-light); font-weight: 600; }
+    .hero-item-value.book   { color: #A8D8A8; font-weight: 600; }
+
+    /* ── SPOTS BAR ── */
+    .spots-bar {
+      background: linear-gradient(135deg, var(--navy), #244d8c);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .spots-text { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--white); }
+    .spots-text strong { color: var(--gold); font-size: 20px; }
+    .spots-remaining { font-size: 13px; color: #FF9B9B; font-weight: 600; margin-top: 3px; }
+    .spots-track { flex: 1; min-width: 140px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; }
+    .spots-fill { height: 100%; width: 0%; background: linear-gradient(to right, var(--gold), var(--gold-light)); border-radius: 5px; transition: width 0.6s ease; }
+
+    /* ── FORM BODY ── */
+    .form-body { padding: 36px 40px; }
+    .form-intro {
+      font-size: 17px; color: var(--muted); font-style: italic;
+      margin-bottom: 28px; padding-bottom: 22px;
+      border-bottom: 1px solid var(--border); line-height: 1.7;
+    }
+    .form-section { margin-bottom: 28px; }
+    .form-label {
+      display: block; font-family: 'Playfair Display', serif;
+      font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 8px;
+    }
+    .form-label .req { color: var(--error); margin-left: 3px; }
+    .form-hint { font-size: 13px; color: var(--muted); font-style: italic; margin-top: -4px; margin-bottom: 10px; display: block; }
+    .form-input {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--border); border-radius: 3px;
+      font-family: 'Crimson Pro', serif; font-size: 17px; color: var(--ink);
+      background: var(--white); transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    .form-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,58,107,0.1); }
+    .form-input.field-error { border-color: var(--error); background: #fff8f8; }
+    .error-msg {
+      font-size: 13px; color: var(--error); margin-top: 6px;
+      display: none; font-style: italic; padding: 6px 10px;
+      background: rgba(184,50,50,0.06); border-left: 3px solid var(--error); border-radius: 2px;
+    }
+    .error-msg.visible { display: block; }
+    .char-counter { font-size: 12px; color: var(--muted); text-align: right; margin-top: 4px; }
+    .char-counter.warn { color: var(--error); }
+
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .options-grid.single-col { grid-template-columns: 1fr; }
+    .option-label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 3px;
+      cursor: pointer; background: var(--white); transition: all 0.15s;
+      font-size: 16px; color: var(--ink); user-select: none;
+    }
+    .option-label:hover { border-color: var(--navy); background: rgba(27,58,107,0.03); }
+    .option-label input[type="radio"],
+    .option-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--navy); cursor: pointer; flex-shrink: 0; }
+    .option-label:has(input:checked) { border-color: var(--navy); background: rgba(27,58,107,0.06); color: var(--navy); font-weight: 600; }
+    .option-label.participant-opt:has(input:checked) { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+    .group-error { border: 1.5px solid var(--error) !important; border-radius: 3px; padding: 8px; background: rgba(184,50,50,0.03); }
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+    .consent-box {
+      background: var(--gold-pale); border: 1.5px solid var(--border);
+      border-left: 4px solid var(--gold); border-radius: 3px;
+      padding: 18px; font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 14px;
+    }
+
+    /* ── SUBMIT ── */
+    .submit-wrap { text-align: center; margin-top: 36px; }
+    .submit-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--navy-deep), var(--navy));
+      color: var(--white); font-family: 'Playfair Display', serif;
+      font-size: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 18px 56px; border: none; border-radius: 3px; cursor: pointer;
+      position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(27,58,107,0.35);
+    }
+    .submit-btn::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+    }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(27,58,107,0.45); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .submit-note { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 12px; }
+
+    .validation-summary {
+      display: none; margin-top: 20px; padding: 16px 20px;
+      background: rgba(184,50,50,0.06); border: 1.5px solid var(--error);
+      border-radius: 3px; font-size: 14px; color: var(--error);
+    }
+    .validation-summary.visible { display: block; }
+    .validation-summary ul { margin: 8px 0 0 18px; }
+    .validation-summary ul li { margin-bottom: 4px; }
+
+    .sending-overlay {
+      display: none; text-align: center; padding: 24px;
+      font-family: 'Playfair Display', serif; font-size: 16px;
+      color: var(--navy); font-style: italic;
+    }
+
+    /* ── SUCCESS SCREEN ── */
+    .success-screen { display: none; padding: 56px 40px; text-align: center; }
+    .success-icon {
+      width: 88px; height: 88px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 38px; margin: 0 auto 24px;
+      box-shadow: 0 8px 32px rgba(27,58,107,0.3); border: 3px solid var(--gold);
+    }
+    .success-screen h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--navy); margin-bottom: 8px; }
+    .success-name { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold); margin-bottom: 16px; font-style: italic; display: block; }
+    .success-screen p { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 480px; margin: 0 auto 8px; }
+    .success-detail {
+      margin-top: 24px; padding: 22px 24px;
+      background: var(--gold-pale); border: 1px solid var(--border);
+      border-left: 4px solid var(--gold); border-radius: 3px;
+      font-size: 15px; color: var(--ink); text-align: left; line-height: 1.8;
+    }
+    .success-detail ul { margin: 8px 0 0 18px; }
+    .success-detail ul li { margin-bottom: 4px; }
+    .success-spots {
+      margin-top: 20px; padding: 14px 20px;
+      background: rgba(27,58,107,0.06); border: 1px solid rgba(27,58,107,0.15);
+      border-radius: 3px; font-size: 14px; color: var(--navy); font-style: italic;
+    }
+
+    /* ── ERROR SCREEN ── */
+    .error-screen { display: none; padding: 40px; text-align: center; }
+    .error-screen h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--error); margin-bottom: 12px; }
+    .error-screen p { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 8px; }
+    .error-detail { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 8px; }
+    .retry-btn {
+      margin-top: 20px; padding: 12px 32px;
+      background: var(--navy); color: var(--white);
+      font-family: 'Playfair Display', serif; font-size: 15px;
+      border: none; border-radius: 3px; cursor: pointer;
+    }
+
+    /* ── FOOTER ── */
+    .form-footer {
+      text-align: center; padding: 18px 40px 26px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(to bottom, var(--cream), #F5F0E8);
+    }
+    .catchphrase { font-family: 'Playfair Display', serif; font-size: 14px; font-style: italic; color: var(--navy); }
+    .catchphrase span { color: var(--gold); }
+    .community-name { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp   { from { opacity: 0; transform: translateY(24px);  } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin     { to { transform: rotate(360deg); } }
+    @keyframes pulse    { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .spinner {
+      display: inline-block; width: 20px; height: 20px;
+      border: 3px solid rgba(27,58,107,0.2); border-top-color: var(--navy);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+      vertical-align: middle; margin-right: 8px;
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 20px 12px 60px; }
+      .hero-banner, .form-body, .form-footer, .spots-bar { padding-left: 20px; padding-right: 20px; }
+      .hero-grid, .options-grid { grid-template-columns: 1fr; }
+      .success-screen, .error-screen { padding: 36px 20px; }
+      .brand-title { font-size: 42px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">Pilot Session &nbsp;&#10022;&nbsp; Limited Places</div>
+    <span class="brand-title">Verse<span>Quest</span>4Fs</span>
+    <h1>Bible Quiz &amp; Storytelling Community</h1>
+    <span class="four-fs-tagline">Fun &nbsp;&#10022;&nbsp; Fellowship &nbsp;&#10022;&nbsp; Friendship &nbsp;&#10022;&nbsp; Fortification</span>
+    <div class="header-divider"><span>&#10022;</span></div>
+    <p class="header-sub">Register your interest &mdash; all ages, all backgrounds, all welcome</p>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+      <div class="hero-grid">
+        <div class="hero-item">
+          <span class="hero-icon">&#128214;</span>
+          <div><span class="hero-item-label">Book Studied</span><span class="hero-item-value book">The Book of Ruth</span></div>
+        </div>
+        <div class="hero-item">
+          <span class="hero-icon">&#128197;</span>
+          <div><span class="hero-item-label">Session Date &amp; Time</span><span class="hero-item-value">2nd May 2026 &nbsp;|&nbsp; 2:00 &ndash; 5:30pm</span></div>
+        </div>
+        <div class="hero-item">
+          <span class="hero-icon">&#128205;</span>
+          <div><span class="hero-item-label">Venue</span><span class="hero-item-value">Gravesend, Kent, UK<br/><em style="font-size:12px;opacity:0.7">(Exact location confirmed on registration)</em></span></div>
+        </div>
+        <div class="hero-item">
+          <span class="hero-icon">&#127942;</span>
+          <div><span class="hero-item-label">Prizes</span><span class="hero-item-value prize">Yes! Prizes for all award categories</span></div>
+        </div>
+        <div class="hero-item">
+          <span class="hero-icon">&#128101;</span>
+          <div><span class="hero-item-label">Participant Places</span><span class="hero-item-value urgent">24 only &mdash; 6 groups of 4</span></div>
+        </div>
+        <div class="hero-item">
+          <span class="hero-icon">&#9200;</span>
+          <div><span class="hero-item-label">Duration</span><span class="hero-item-value">3.5 hours (incl. breaks)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPOTS BAR -->
+    <div class="spots-bar">
+      <div>
+        <div class="spots-text">Participant places: <strong id="spotsCount">24</strong> remaining</div>
+        <div class="spots-remaining" id="spotsUrgency"></div>
+      </div>
+      <div class="spots-track"><div class="spots-fill" id="spotsFill"></div></div>
+      <div class="spots-text" style="font-size:12px;color:rgba(255,255,255,0.45);font-style:italic;">First come, first served</div>
+    </div>
+
+    <!-- FORM -->
+    <form id="regForm" novalidate>
+      <div class="form-body">
+
+        <p class="form-intro">
+          Welcome to <strong style="font-family:'Playfair Display',serif;color:var(--navy);">VerseQuest4Fs</strong>!
+          Complete this form to register your interest in our Pilot Session &mdash; studying the
+          <strong style="color:var(--navy);">Book of Ruth</strong> on <strong style="color:var(--navy);">2nd May 2026</strong>.
+          Whether you are 8 or 80 &mdash; a lifelong believer, a new reader of Scripture, or simply curious &mdash;
+          there is a place for you here. <em>Know the Word. Tell the Story. Live the Truth.</em>
+          <br/><br/>
+          <strong style="color:var(--error);font-style:normal;">All fields marked * are required.</strong>
+        </p>
+
+        <!-- 1. FULL NAME -->
+        <div class="form-section">
+          <label class="form-label" for="fullName">1. Full Name <span class="req">*</span></label>
+          <span class="form-hint">Enter your first and last name</span>
+          <input class="form-input" type="text" id="fullName" placeholder="e.g. Jane Smith"
+            autocomplete="name" maxlength="80" oninput="liveValidateName()"/>
+          <div class="char-counter" id="nameCounter">0 / 80</div>
+          <span class="error-msg" id="fullNameErr">&#9888; Please enter your full name (at least 2 characters).</span>
+        </div>
+
+        <!-- 2. AGE GROUP -->
+        <div class="form-section">
+          <label class="form-label">2. Age Group <span class="req">*</span></label>
+          <span class="form-hint">Select the group that best describes you</span>
+          <div class="options-grid" id="ageGroupGrid">
+            <label class="option-label"><input type="radio" name="ageGroup" value="Child (under 12)" onchange="clearGroupError('ageGroupGrid','ageGroupErr')"/> Child (under 12)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Teenager (12-17)" onchange="clearGroupError('ageGroupGrid','ageGroupErr')"/> Teenager (12&ndash;17)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Young Adult (18-30)" onchange="clearGroupError('ageGroupGrid','ageGroupErr')"/> Young Adult (18&ndash;30)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Adult (31-60)" onchange="clearGroupError('ageGroupGrid','ageGroupErr')"/> Adult (31&ndash;60)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Senior (61 and above)" onchange="clearGroupError('ageGroupGrid','ageGroupErr')"/> Senior (61 and above)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Prefer not to say" onchange="clearGroupError('ageGroupGrid','ageGroupErr')"/> Prefer not to say</label>
+          </div>
+          <span class="error-msg" id="ageGroupErr">&#9888; Please select your age group.</span>
+        </div>
+
+        <hr class="section-divider"/>
+
+        <!-- 3. CONTACT NUMBER -->
+        <div class="form-section">
+          <label class="form-label" for="contactNo">3. Contact Number <span class="req">*</span></label>
+          <span class="form-hint">UK mobile or landline (at least 10 digits)</span>
+          <input class="form-input" type="tel" id="contactNo" placeholder="e.g. 07700 900123"
+            autocomplete="tel" maxlength="20" oninput="liveValidateContact()"/>
+          <span class="error-msg" id="contactNoErr">&#9888; Please enter a valid contact number (at least 10 digits).</span>
+        </div>
+
+        <!-- 4. EMAIL -->
+        <div class="form-section">
+          <label class="form-label" for="userEmail">4. Email Address <span class="req">*</span></label>
+          <span class="form-hint">We will use this to confirm your registration</span>
+          <input class="form-input" type="email" id="userEmail" placeholder="e.g. yourname@email.com"
+            autocomplete="email" oninput="liveValidateEmail()"/>
+          <span class="error-msg" id="emailErr">&#9888; Please enter a valid email address (e.g. name@example.com).</span>
+        </div>
+
+        <hr class="section-divider"/>
+
+        <!-- 5. HOW HEARD -->
+        <div class="form-section">
+          <label class="form-label">5. How Did You Hear About Us? <span class="req">*</span></label>
+          <span class="form-hint">Select all that apply</span>
+          <div class="options-grid" id="hearAboutGrid">
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Friend or family member" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Friend or family member</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Church announcement" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Church announcement</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Facebook" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Social media (Facebook)</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Instagram" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Social media (Instagram)</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="WhatsApp message" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> WhatsApp message</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Community notice board" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Community notice board</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Church newsletter" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Church newsletter or bulletin</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Other" onchange="clearGroupError('hearAboutGrid','hearAboutErr')"/> Other</label>
+          </div>
+          <span class="error-msg" id="hearAboutErr">&#9888; Please select at least one option.</span>
+        </div>
+
+        <!-- 6. ROLE -->
+        <div class="form-section">
+          <label class="form-label">6. I Would Like to Register As <span class="req">*</span></label>
+          <span class="form-hint">Participant places are limited to 24 &mdash; the countdown only applies to competing members</span>
+          <div class="options-grid single-col" id="roleGrid">
+            <label class="option-label participant-opt">
+              <input type="radio" name="role" value="Participant" id="roleParticipant" onchange="clearGroupError('roleGrid','roleErr')"/>
+              A participant (competing member) &mdash; <em>counts toward the 24 places</em>
+            </label>
+            <label class="option-label">
+              <input type="radio" name="role" value="Volunteer" onchange="clearGroupError('roleGrid','roleErr')"/>
+              A volunteer helper / organiser
+            </label>
+            <label class="option-label">
+              <input type="radio" name="role" value="Judge" onchange="clearGroupError('roleGrid','roleErr')"/>
+              A storytelling judge
+            </label>
+            <label class="option-label">
+              <input type="radio" name="role" value="Not sure" onchange="clearGroupError('roleGrid','roleErr')"/>
+              Not sure yet &mdash; please keep me informed
+            </label>
+          </div>
+          <span class="error-msg" id="roleErr">&#9888; Please select how you would like to be involved.</span>
+        </div>
+
+        <hr class="section-divider"/>
+
+        <!-- 7. ACCESSIBILITY -->
+        <div class="form-section">
+          <label class="form-label" for="accessibility">7. Accessibility or Additional Needs</label>
+          <span class="form-hint">Optional &mdash; please let us know if there is anything we can do to support you</span>
+          <input class="form-input" type="text" id="accessibility"
+            placeholder="e.g. wheelchair access, large print materials, etc." maxlength="200"/>
+        </div>
+
+        <hr class="section-divider"/>
+
+        <!-- 8. CONSENT -->
+        <div class="form-section">
+          <label class="form-label">8. Declaration &amp; Consent <span class="req">*</span></label>
+          <div class="consent-box">
+            By submitting this form I confirm that the information I have provided is accurate and that
+            I consent to VerseQuest4Fs &mdash; Bible Quiz &amp; Storytelling Community storing and using my
+            contact details for the purpose of organising and communicating about community sessions.
+            My details will not be shared with third parties.
+            <em>If under 16, a parent or guardian should complete this form on the participant's behalf.</em>
+          </div>
+          <label class="option-label" id="consentLabel" style="border-color:var(--gold);">
+            <input type="checkbox" id="consent" onchange="clearConsentError()"/>
+            I agree to the above declaration and give my consent
+          </label>
+          <span class="error-msg" id="consentErr">&#9888; You must agree to the declaration before submitting.</span>
+        </div>
+
+        <!-- VALIDATION SUMMARY -->
+        <div class="validation-summary" id="validationSummary">
+          <strong>&#9888; Please correct the following before submitting:</strong>
+          <ul id="summaryList"></ul>
+        </div>
+
+        <div class="submit-wrap">
+          <button type="submit" class="submit-btn" id="submitBtn">Submit Registration &#10022;</button>
+          <p class="submit-note">Your details will be sent securely to versequest4fs@gmail.com</p>
+        </div>
+
+        <div class="sending-overlay" id="sendingOverlay">
+          <span class="spinner"></span>
+          <span style="animation:pulse 1.2s infinite;display:inline;">Sending your registration&hellip; please wait</span>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">&#127881;</div>
+      <h2>Registration Received!</h2>
+      <span class="success-name" id="successName"></span>
+      <p>Your registration has been successfully submitted and sent to the organiser at <strong>versequest4fs@gmail.com</strong>.</p>
+      <div class="success-detail">
+        <strong>What you have registered for:</strong>
+        <ul>
+          <li>Book of Ruth &mdash; Bible Quiz &amp; Storytelling</li>
+          <li>2nd May 2026, 2:00 &ndash; 5:30pm</li>
+          <li>Gravesend, Kent, UK (exact location to follow)</li>
+          <li>Prizes awarded across all categories</li>
+        </ul>
+        <br/>
+        <strong>What happens next?</strong><br/>
+        The organiser will be in touch shortly to confirm your place and send the exact venue details.
+        In the meantime, start reading the <strong>Book of Ruth</strong> &mdash; all four chapters &mdash;
+        so you are ready to quiz and tell the story on the day!
+        <br/><br/>
+        <em>"Know the Word. Tell the Story. Live the Truth."</em>
+      </div>
+      <div class="success-spots" id="successSpots"></div>
+    </div>
+
+    <!-- ERROR SCREEN -->
+    <div class="error-screen" id="errorScreen">
+      <h3>Something Went Wrong</h3>
+      <p>We were unable to send your registration automatically.</p>
+      <p>Please contact us directly to register your place:</p>
+      <p><strong>Email: versequest4fs@gmail.com</strong></p>
+      <p class="error-detail" id="errorDetail"></p>
+      <button class="retry-btn" onclick="retryForm()">Try Again</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="form-footer">
+      <p class="catchphrase">Know the Word. Tell the Story. <span>Live the Truth.</span></p>
+      <p class="community-name">VerseQuest4Fs &nbsp;|&nbsp; Bible Quiz &amp; Storytelling Community &nbsp;|&nbsp; Pilot Registration</p>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  /* ── EMAILJS CREDENTIALS ── */
+  var EJS_PUB  = 'Ryxf9h-oksj3HOpI1';
+  var EJS_SVC  = 'service_v1399st';
+  var EJS_TPL  = 'template_q34vdae';
+
+  /* Initialise as soon as this script runs — EmailJS is already loaded in <head> */
+  try {
+    emailjs.init({ publicKey: EJS_PUB });
+  } catch(e) {
+    console.error('EmailJS init error:', e);
+  }
+
+  /* ── SPOTS TRACKER ── */
+  var MAX_SPOTS = 24;
+  function getSpotsUsed() {
+    return parseInt(localStorage.getItem('vq4f_spots_used') || '0', 10);
+  }
+  function incrementSpots() {
+    var used = getSpotsUsed() + 1;
+    localStorage.setItem('vq4f_spots_used', String(used));
+    return used;
+  }
+  function updateSpotsUI(used) {
+    var remaining = Math.max(0, MAX_SPOTS - used);
+    var pct = Math.min(100, (used / MAX_SPOTS) * 100);
+    document.getElementById('spotsCount').textContent = String(remaining);
+    document.getElementById('spotsFill').style.width = pct + '%';
+    var urg = document.getElementById('spotsUrgency');
+    if (remaining === 0) {
+      urg.textContent = 'All participant places are now full!';
+    } else if (remaining <= 5) {
+      urg.textContent = 'Almost full — only ' + remaining + (remaining === 1 ? ' place' : ' places') + ' left!';
+    } else {
+      urg.textContent = '';
+    }
+  }
+  updateSpotsUI(getSpotsUsed());
+
+  /* ── LIVE VALIDATION ── */
+  function liveValidateName() {
+    var val = document.getElementById('fullName').value;
+    document.getElementById('nameCounter').textContent = val.length + ' / 80';
+    document.getElementById('nameCounter').classList.toggle('warn', val.length > 70);
+    if (val.trim().length >= 2) {
+      document.getElementById('fullName').classList.remove('field-error');
+      document.getElementById('fullNameErr').classList.remove('visible');
+    }
+  }
+  function liveValidateContact() {
+    var raw = document.getElementById('contactNo').value;
+    var digits = raw.replace(/[\s\-().+]/g, '');
+    if (digits.length >= 10 && /^\d+$/.test(digits)) {
+      document.getElementById('contactNo').classList.remove('field-error');
+      document.getElementById('contactNoErr').classList.remove('visible');
+    }
+  }
+  function liveValidateEmail() {
+    var val = document.getElementById('userEmail').value.trim();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) {
+      document.getElementById('userEmail').classList.remove('field-error');
+      document.getElementById('emailErr').classList.remove('visible');
+    }
+  }
+  function clearGroupError(gridId, errId) {
+    document.getElementById(gridId).classList.remove('group-error');
+    document.getElementById(errId).classList.remove('visible');
+  }
+  function clearConsentError() {
+    document.getElementById('consentErr').classList.remove('visible');
+    document.getElementById('consentLabel').style.borderColor = 'var(--gold)';
+  }
+
+  /* ── FULL VALIDATION ── */
+  function validateAll() {
+    var valid = true;
+    var errors = [];
+
+    function showErr(id)  { document.getElementById(id).classList.add('visible'); }
+    function hideErr(id)  { document.getElementById(id).classList.remove('visible'); }
+    function markErr(id)  { document.getElementById(id).classList.add('field-error'); }
+    function clearE(id)   { document.getElementById(id).classList.remove('field-error'); }
+
+    /* Name */
+    var name = document.getElementById('fullName').value.trim();
+    if (name.length < 2) {
+      markErr('fullName'); showErr('fullNameErr');
+      errors.push('Full name is required');
+      valid = false;
+    } else { clearE('fullName'); hideErr('fullNameErr'); }
+
+    /* Age group */
+    var age = document.querySelector('input[name="ageGroup"]:checked');
+    if (!age) {
+      document.getElementById('ageGroupGrid').classList.add('group-error');
+      showErr('ageGroupErr');
+      errors.push('Age group must be selected');
+      valid = false;
+    } else {
+      document.getElementById('ageGroupGrid').classList.remove('group-error');
+      hideErr('ageGroupErr');
+    }
+
+    /* Contact */
+    var contact = document.getElementById('contactNo').value.trim();
+    var digits = contact.replace(/[\s\-().+]/g, '');
+    if (digits.length < 10 || !/^\d+$/.test(digits)) {
+      markErr('contactNo'); showErr('contactNoErr');
+      errors.push('A valid contact number is required (at least 10 digits)');
+      valid = false;
+    } else { clearE('contactNo'); hideErr('contactNoErr'); }
+
+    /* Email */
+    var email = document.getElementById('userEmail').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      markErr('userEmail'); showErr('emailErr');
+      errors.push('A valid email address is required');
+      valid = false;
+    } else { clearE('userEmail'); hideErr('emailErr'); }
+
+    /* How heard */
+    var heardEls = document.querySelectorAll('input[name="hearAbout"]:checked');
+    var heard = Array.prototype.map.call(heardEls, function(i){ return i.value; });
+    if (heard.length === 0) {
+      document.getElementById('hearAboutGrid').classList.add('group-error');
+      showErr('hearAboutErr');
+      errors.push('Please tell us how you heard about us');
+      valid = false;
+    } else {
+      document.getElementById('hearAboutGrid').classList.remove('group-error');
+      hideErr('hearAboutErr');
+    }
+
+    /* Role */
+    var role = document.querySelector('input[name="role"]:checked');
+    if (!role) {
+      document.getElementById('roleGrid').classList.add('group-error');
+      showErr('roleErr');
+      errors.push('Please select how you would like to be involved');
+      valid = false;
+    } else {
+      document.getElementById('roleGrid').classList.remove('group-error');
+      hideErr('roleErr');
+    }
+
+    /* Consent */
+    var consent = document.getElementById('consent').checked;
+    if (!consent) {
+      showErr('consentErr');
+      document.getElementById('consentLabel').style.borderColor = 'var(--error)';
+      errors.push('You must agree to the declaration to register');
+      valid = false;
+    } else {
+      hideErr('consentErr');
+      document.getElementById('consentLabel').style.borderColor = 'var(--gold)';
+    }
+
+    /* Summary */
+    var summary = document.getElementById('validationSummary');
+    if (!valid) {
+      document.getElementById('summaryList').innerHTML =
+        errors.map(function(e){ return '<li>' + e + '</li>'; }).join('');
+      summary.classList.add('visible');
+    } else {
+      summary.classList.remove('visible');
+    }
+
+    return {
+      valid: valid,
+      name: name,
+      age: age ? age.value : '',
+      contact: contact,
+      email: email,
+      heard: heard.join(', '),
+      role: role ? role.value : '',
+      accessibility: document.getElementById('accessibility').value.trim()
+    };
+  }
+
+  /* ── FORM SUBMISSION ── */
+  document.getElementById('regForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var result = validateAll();
+    if (!result.valid) {
+      var firstErr = document.querySelector('.field-error, .error-msg.visible');
+      if (firstErr) { firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      return;
+    }
+
+    /* Participant spot check */
+    if (result.role === 'Participant' && getSpotsUsed() >= MAX_SPOTS) {
+      alert('We are sorry — all 24 participant places are now full. You are welcome to register as a volunteer, judge, or to be kept informed.');
+      return;
+    }
+
+    /* Sending state */
+    var submitBtn = document.getElementById('submitBtn');
+    var sendingOverlay = document.getElementById('sendingOverlay');
+    submitBtn.disabled = true;
+    submitBtn.style.display = 'none';
+    sendingOverlay.style.display = 'block';
+
+    var submittedAt = new Date().toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+
+    var templateParams = {
+      from_name:      result.name,
+      age_group:      result.age,
+      contact_number: result.contact,
+      user_email:     result.email,
+      heard_about:    result.heard,
+      role:           result.role,
+      accessibility:  result.accessibility || 'None stated',
+      submitted_at:   submittedAt,
+      to_email:       'versequest4fs@gmail.com'
+    };
+
+    emailjs.send(EJS_SVC, EJS_TPL, templateParams)
+      .then(function(response) {
+        console.log('EmailJS success:', response.status, response.text);
+
+        /* Update spots */
+        var used = getSpotsUsed();
+        if (result.role === 'Participant') {
+          used = incrementSpots();
+          updateSpotsUI(used);
+        }
+
+        /* Show success */
+        document.getElementById('regForm').style.display = 'none';
+        sendingOverlay.style.display = 'none';
+        var ss = document.getElementById('successScreen');
+        ss.style.display = 'block';
+        document.getElementById('successName').textContent =
+          'Welcome, ' + result.name.split(' ')[0] + '!';
+
+        if (result.role === 'Participant') {
+          var remaining = Math.max(0, MAX_SPOTS - used);
+          document.getElementById('successSpots').textContent = remaining > 0
+            ? remaining + ' participant place' + (remaining === 1 ? '' : 's') + ' still available — share this with a friend!'
+            : 'You took the last available participant place!';
+        }
+
+        ss.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      })
+      .catch(function(err) {
+        console.error('EmailJS error:', JSON.stringify(err));
+        sendingOverlay.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+        submitBtn.disabled = false;
+        document.getElementById('regForm').style.display = 'none';
+
+        /* Show error with diagnostic detail */
+        var detail = '';
+        if (err && err.status) { detail = 'Error code: ' + err.status + ' — ' + (err.text || ''); }
+        else if (err && err.message) { detail = err.message; }
+        document.getElementById('errorDetail').textContent = detail;
+        document.getElementById('errorScreen').style.display = 'block';
+        document.getElementById('errorScreen').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+  });
+
+  function retryForm() {
+    document.getElementById('regForm').style.display = 'block';
+    document.getElementById('errorScreen').style.display = 'none';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
