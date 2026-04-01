@@ -6,388 +6,132 @@
   <title>VerseQuest4Fs — Team Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
-    :root {
-      --navy:        #1B3A6B;
-      --navy-deep:   #0F2347;
-      --navy-mid:    #1a3460;
-      --gold:        #C9A84C;
-      --gold-light:  #F0D080;
-      --gold-pale:   #FDF6E3;
-      --cream:       #FAFAF5;
-      --ink:         #2A2A2A;
-      --muted:       #6B6B6B;
-      --border:      #D8CCB0;
-      --error:       #B83232;
-      --success:     #2E7D52;
-      --white:       #FFFFFF;
-      --sidebar-w:   240px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Crimson Pro', Georgia, serif;
-      background: #f0ede6;
-      color: var(--ink);
-      min-height: 100vh;
-      display: flex;
-    }
-
-    /* ── SIDEBAR ── */
-    .sidebar {
-      width: var(--sidebar-w);
-      background: var(--navy-deep);
-      min-height: 100vh;
-      position: fixed; top: 0; left: 0;
-      display: flex; flex-direction: column;
-      z-index: 100;
-      box-shadow: 4px 0 24px rgba(0,0,0,0.3);
-    }
-    .sidebar-logo {
-      padding: 28px 20px 20px;
-      border-bottom: 1px solid rgba(201,168,76,0.2);
-    }
-    .sidebar-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px; font-weight: 900;
-      color: var(--gold); display: block; line-height: 1;
-    }
-    .sidebar-brand span { color: var(--white); }
-    .sidebar-subtitle {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: rgba(255,255,255,0.4);
-      display: block; margin-top: 4px;
-    }
-    .sidebar-nav { padding: 16px 0; flex: 1; }
-    .nav-section-label {
-      font-size: 9px; font-weight: 600; letter-spacing: 0.3em;
-      text-transform: uppercase; color: rgba(201,168,76,0.5);
-      padding: 12px 20px 6px;
-    }
-    .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 20px; cursor: pointer;
-      color: rgba(255,255,255,0.55);
-      font-family: 'Crimson Pro', serif; font-size: 15px;
-      transition: all 0.15s; border-left: 3px solid transparent;
-      text-decoration: none;
-    }
-    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.05); }
-    .nav-item.active {
-      color: var(--gold); border-left-color: var(--gold);
-      background: rgba(201,168,76,0.08);
-    }
-    .nav-icon { font-size: 16px; flex-shrink: 0; }
-    .sidebar-footer {
-      padding: 16px 20px;
-      border-top: 1px solid rgba(201,168,76,0.15);
-      font-size: 11px; color: rgba(255,255,255,0.3);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── MAIN AREA ── */
-    .main {
-      margin-left: var(--sidebar-w);
-      flex: 1; min-height: 100vh;
-      display: flex; flex-direction: column;
-    }
-
-    /* ── TOP BAR ── */
-    .topbar {
-      background: var(--white);
-      border-bottom: 2px solid var(--gold);
-      padding: 16px 32px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 50;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-    .topbar-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px; font-weight: 700; color: var(--navy);
-    }
-    .topbar-title span { color: var(--gold); font-style: italic; }
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .spots-pill {
-      background: var(--navy-deep);
-      color: var(--gold); font-size: 12px; font-weight: 600;
-      padding: 6px 14px; border-radius: 20px;
-      letter-spacing: 0.05em;
-    }
-    .export-btn {
-      background: var(--gold);
-      color: var(--navy-deep); font-family: 'Playfair Display', serif;
-      font-size: 13px; font-weight: 700;
-      padding: 8px 18px; border: none; border-radius: 3px;
-      cursor: pointer; transition: all 0.15s;
-    }
-    .export-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-    /* ── CONTENT ── */
-    .content { padding: 28px 32px; flex: 1; }
-
-    /* PAGE SECTIONS */
-    .page-section { display: none; }
-    .page-section.active { display: block; }
-
-    /* ── STAT CARDS ── */
-    .stats-row {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 16px; margin-bottom: 24px;
-    }
-    .stat-card {
-      background: var(--white); border-radius: 4px;
-      padding: 20px 22px;
-      border-top: 3px solid var(--gold);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      position: relative; overflow: hidden;
-    }
-    .stat-card::before {
-      content: ''; position: absolute;
-      top: 0; right: 0; width: 60px; height: 60px;
-      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
-    }
-    .stat-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px;
-    }
-    .stat-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px; font-weight: 900; color: var(--navy);
-      line-height: 1; display: block;
-    }
-    .stat-sub {
-      font-size: 12px; color: var(--muted); margin-top: 4px;
-      font-style: italic;
-    }
-    .stat-card.highlight { border-top-color: var(--navy); }
-    .stat-card.highlight .stat-value { color: var(--gold); }
-    .stat-card.warn { border-top-color: #e05c5c; }
-    .stat-card.warn .stat-value { color: #e05c5c; }
-    .stat-card.success-card { border-top-color: var(--success); }
-    .stat-card.success-card .stat-value { color: var(--success); }
-
-    /* ── GRID LAYOUT ── */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-
-    /* ── PANEL ── */
-    .panel {
-      background: var(--white); border-radius: 4px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      overflow: hidden;
-    }
-    .panel-header {
-      padding: 16px 20px;
-      background: var(--navy-deep);
-      border-bottom: 2px solid var(--gold);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .panel-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 14px; font-weight: 700;
-      color: var(--white);
-    }
-    .panel-title span { color: var(--gold); }
-    .panel-badge {
-      font-size: 11px; color: var(--gold);
-      background: rgba(201,168,76,0.15);
-      padding: 3px 10px; border-radius: 10px;
-      font-weight: 600; letter-spacing: 0.05em;
-    }
-    .panel-body { padding: 20px; }
-
-    /* ── BAR CHART ── */
-    .bar-chart { display: flex; flex-direction: column; gap: 10px; }
-    .bar-row { display: flex; align-items: center; gap: 10px; }
-    .bar-label {
-      font-size: 13px; color: var(--ink); min-width: 160px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .bar-track {
-      flex: 1; height: 22px; background: #f0ede6;
-      border-radius: 2px; overflow: hidden;
-      position: relative;
-    }
-    .bar-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--navy), #2a5298);
-      border-radius: 2px;
-      transition: width 0.8s ease;
-      position: relative;
-    }
-    .bar-fill.gold { background: linear-gradient(to right, var(--gold), var(--gold-light)); }
-    .bar-fill.green { background: linear-gradient(to right, #2E7D52, #4caf50); }
-    .bar-fill.red   { background: linear-gradient(to right, #c0392b, #e74c3c); }
-    .bar-count {
-      font-size: 13px; font-weight: 600;
-      color: var(--navy); min-width: 30px; text-align: right;
-    }
-
-    /* ── DONUT ── */
-    .donut-wrap {
-      display: flex; align-items: center; gap: 24px;
-      justify-content: center; padding: 10px 0;
-    }
-    .donut-legend { display: flex; flex-direction: column; gap: 8px; }
-    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-    .legend-dot {
-      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
-    }
-
-    /* ── REGISTRATIONS TABLE ── */
-    .table-wrap { overflow-x: auto; }
-    table {
-      width: 100%; border-collapse: collapse;
-      font-size: 14px;
-    }
-    thead tr { background: var(--navy-deep); }
-    thead th {
-      padding: 12px 14px; text-align: left;
-      font-family: 'Playfair Display', serif;
-      font-size: 11px; font-weight: 700;
-      color: var(--gold); letter-spacing: 0.1em;
-      text-transform: uppercase; white-space: nowrap;
-    }
-    tbody tr { border-bottom: 1px solid #ede9e0; transition: background 0.1s; }
-    tbody tr:hover { background: rgba(201,168,76,0.04); }
-    tbody td { padding: 11px 14px; color: var(--ink); vertical-align: middle; }
-    tbody td:first-child { font-weight: 600; color: var(--navy); }
-    .role-badge {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-      padding: 3px 9px; border-radius: 10px;
-      display: inline-block; white-space: nowrap;
-    }
-    .role-participant { background: rgba(201,168,76,0.15); color: #8B6914; border: 1px solid rgba(201,168,76,0.4); }
-    .role-volunteer   { background: rgba(27,58,107,0.1);  color: var(--navy); border: 1px solid rgba(27,58,107,0.2); }
-    .role-judge       { background: rgba(46,125,82,0.1);  color: var(--success); border: 1px solid rgba(46,125,82,0.2); }
-    .role-notsure     { background: rgba(107,107,107,0.1); color: var(--muted); border: 1px solid rgba(107,107,107,0.2); }
-    .access-yes { color: #c0392b; font-weight: 600; font-size: 13px; }
-    .access-no  { color: var(--muted); font-size: 13px; }
-    .empty-state {
-      text-align: center; padding: 48px 20px;
-      color: var(--muted); font-style: italic; font-size: 16px;
-    }
-    .empty-state strong { display: block; font-family: 'Playfair Display', serif; font-size: 20px; color: var(--navy); margin-bottom: 8px; font-style: normal; }
-
-    /* ── ADD REGISTRATION FORM ── */
-    .add-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .add-form .full-width { grid-column: 1 / -1; }
-    .field-group { display: flex; flex-direction: column; gap: 6px; }
-    .field-label {
-      font-family: 'Playfair Display', serif;
-      font-size: 13px; font-weight: 700; color: var(--navy);
-    }
-    .field-input, .field-select {
-      padding: 10px 14px;
-      border: 1.5px solid var(--border); border-radius: 3px;
-      font-family: 'Crimson Pro', serif; font-size: 15px; color: var(--ink);
-      background: var(--white); outline: none;
-      transition: border-color 0.2s;
-    }
-    .field-input:focus, .field-select:focus { border-color: var(--navy); }
-    .add-btn {
-      background: linear-gradient(135deg, var(--navy-deep), var(--navy));
-      color: var(--white); font-family: 'Playfair Display', serif;
-      font-size: 14px; font-weight: 700;
-      padding: 12px 28px; border: none; border-radius: 3px;
-      cursor: pointer; transition: all 0.15s;
-      position: relative; overflow: hidden;
-    }
-    .add-btn::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
-    }
-    .add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,58,107,0.3); }
-    .add-actions { display: flex; gap: 12px; align-items: center; grid-column: 1 / -1; margin-top: 4px; }
-    .clear-btn {
-      background: none; border: 1.5px solid var(--border);
-      color: var(--muted); font-family: 'Crimson Pro', serif;
-      font-size: 14px; padding: 11px 20px; border-radius: 3px;
-      cursor: pointer; transition: all 0.15s;
-    }
-    .clear-btn:hover { border-color: var(--navy); color: var(--navy); }
-    .success-toast {
-      display: none; background: rgba(46,125,82,0.1);
-      border: 1px solid rgba(46,125,82,0.3); border-left: 4px solid var(--success);
-      padding: 12px 16px; border-radius: 3px;
-      font-size: 14px; color: var(--success);
-      grid-column: 1 / -1;
-    }
-    .success-toast.show { display: block; }
-
-    /* ── SEARCH & FILTER BAR ── */
-    .filter-bar {
-      display: flex; gap: 12px; align-items: center;
-      margin-bottom: 16px; flex-wrap: wrap;
-    }
-    .search-input {
-      flex: 1; min-width: 200px;
-      padding: 9px 14px; border: 1.5px solid var(--border);
-      border-radius: 3px; font-family: 'Crimson Pro', serif;
-      font-size: 15px; color: var(--ink); outline: none;
-    }
-    .search-input:focus { border-color: var(--navy); }
-    .filter-select {
-      padding: 9px 14px; border: 1.5px solid var(--border);
-      border-radius: 3px; font-family: 'Crimson Pro', serif;
-      font-size: 15px; color: var(--ink); background: var(--white);
-      outline: none; cursor: pointer;
-    }
-    .delete-btn {
-      background: none; border: none; cursor: pointer;
-      color: #ccc; font-size: 16px; transition: color 0.15s;
-      padding: 4px 8px;
-    }
-    .delete-btn:hover { color: var(--error); }
-
-    /* ── GROUP ASSIGNMENT ── */
-    .group-grid {
-      display: grid; grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-    }
-    .group-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 4px; overflow: hidden;
-    }
-    .group-header {
-      background: var(--navy-deep); padding: 10px 14px;
-      border-bottom: 2px solid var(--gold);
-    }
-    .group-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 13px; font-weight: 700; color: var(--gold);
-    }
-    .group-count { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-    .group-members { padding: 10px 14px; min-height: 80px; }
-    .group-member {
-      font-size: 12px; color: var(--ink); padding: 4px 0;
-      border-bottom: 1px solid #f0ede6; display: flex;
-      justify-content: space-between; align-items: center;
-    }
-    .group-member:last-child { border-bottom: none; }
-    .member-age { font-size: 10px; color: var(--muted); }
-    .group-empty { font-size: 12px; color: var(--muted); font-style: italic; }
-
-    /* ── PROGRESS RING ── */
-    .progress-ring-wrap {
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; padding: 16px 0;
-    }
-    .progress-ring-label {
-      font-family: 'Playfair Display', serif;
-      font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center;
-    }
-
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-    .content > * { animation: fadeUp 0.4s ease both; }
-
-    @media (max-width: 900px) {
-      .sidebar { width: 60px; }
-      .sidebar-brand, .sidebar-subtitle, .nav-item span, .nav-section-label, .sidebar-footer { display: none; }
-      .main { margin-left: 60px; }
-      .stats-row { grid-template-columns: 1fr 1fr; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      .group-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    :root{--navy:#1B3A6B;--navy-deep:#0F2347;--gold:#C9A84C;--gold-light:#F0D080;--gold-pale:#FDF6E3;--cream:#FAFAF5;--ink:#2A2A2A;--muted:#6B6B6B;--border:#D8CCB0;--error:#B83232;--success:#2E7D52;--white:#FFFFFF;--sidebar-w:220px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Crimson Pro',Georgia,serif;background:#f0ede6;color:var(--ink);min-height:100vh;display:flex;}
+    .sidebar{width:var(--sidebar-w);background:var(--navy-deep);min-height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;box-shadow:4px 0 24px rgba(0,0,0,.3);}
+    .sidebar-logo{padding:24px 20px 18px;border-bottom:1px solid rgba(201,168,76,.2);}
+    .brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--gold);display:block;line-height:1;}
+    .brand span{color:var(--white);}
+    .brand-sub{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-top:4px;}
+    .nav{padding:12px 0;flex:1;}
+    .nav-lbl{font-size:9px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,168,76,.45);padding:10px 18px 4px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;color:rgba(255,255,255,.5);font-size:15px;transition:all .15s;border-left:3px solid transparent;text-decoration:none;}
+    .nav-item:hover{color:var(--white);background:rgba(255,255,255,.04);}
+    .nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(201,168,76,.07);}
+    .nav-icon{font-size:15px;flex-shrink:0;}
+    .sidebar-foot{padding:14px 18px;border-top:1px solid rgba(201,168,76,.12);font-size:10px;color:rgba(255,255,255,.25);}
+    .main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column;}
+    .topbar{background:var(--white);border-bottom:2px solid var(--gold);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+    .topbar-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);}
+    .topbar-title span{color:var(--gold);font-style:italic;}
+    .topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .sync-status{font-size:12px;color:var(--muted);font-style:italic;}
+    .pill{background:var(--navy-deep);color:var(--gold);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;}
+    .top-btn{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;padding:7px 14px;border:none;border-radius:3px;cursor:pointer;transition:all .15s;}
+    .top-btn.gold{background:var(--gold);color:var(--navy-deep);}
+    .top-btn.gold:hover{background:var(--gold-light);}
+    .top-btn.navy{background:var(--navy);color:var(--white);}
+    .top-btn.navy:hover{background:var(--navy-deep);}
+    .content{padding:24px 28px;flex:1;}
+    .page{display:none;}.page.active{display:block;}
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+    .stat{background:var(--white);border-radius:4px;padding:18px 20px;border-top:3px solid var(--gold);box-shadow:0 2px 10px rgba(0,0,0,.05);}
+    .stat.blue{border-top-color:var(--navy);}
+    .stat.green{border-top-color:var(--success);}
+    .stat.red{border-top-color:var(--error);}
+    .stat-lbl{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+    .stat-val{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:var(--navy);line-height:1;display:block;}
+    .stat.gold .stat-val{color:var(--gold);}
+    .stat.green .stat-val{color:var(--success);}
+    .stat.red .stat-val{color:var(--error);}
+    .stat-sub{font-size:12px;color:var(--muted);margin-top:3px;font-style:italic;}
+    /* GRID */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:20px;}
+    /* PANEL */
+    .panel{background:var(--white);border-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.05);overflow:hidden;margin-bottom:20px;}
+    .panel-head{padding:14px 18px;background:var(--navy-deep);border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;}
+    .panel-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--white);}
+    .panel-title span{color:var(--gold);}
+    .panel-badge{font-size:11px;color:var(--gold);background:rgba(201,168,76,.15);padding:3px 10px;border-radius:10px;font-weight:600;}
+    .panel-body{padding:18px;}
+    /* BAR CHART */
+    .bar-chart{display:flex;flex-direction:column;gap:9px;}
+    .bar-row{display:flex;align-items:center;gap:8px;}
+    .bar-lbl{font-size:13px;color:var(--ink);min-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .bar-track{flex:1;height:20px;background:#f0ede6;border-radius:2px;overflow:hidden;}
+    .bar-fill{height:100%;border-radius:2px;transition:width .7s ease;}
+    .bf-navy{background:linear-gradient(to right,var(--navy),#2a5298);}
+    .bf-gold{background:linear-gradient(to right,var(--gold),var(--gold-light));}
+    .bf-green{background:linear-gradient(to right,#2E7D52,#4caf50);}
+    .bar-n{font-size:13px;font-weight:600;color:var(--navy);min-width:24px;text-align:right;}
+    /* PROGRESS RING */
+    .ring-wrap{display:flex;flex-direction:column;align-items:center;padding:10px 0;}
+    .ring-lbl{font-size:13px;color:var(--muted);margin-top:8px;text-align:center;}
+    .ring-pct{font-family:'Playfair Display',serif;color:var(--gold);font-size:15px;}
+    /* TABLE */
+    .tbl-wrap{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:14px;}
+    thead tr{background:var(--navy-deep);}
+    th{padding:10px 13px;text-align:left;font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+    tbody tr{border-bottom:1px solid #ede9e0;transition:background .1s;}
+    tbody tr:hover{background:rgba(201,168,76,.03);}
+    td{padding:10px 13px;color:var(--ink);vertical-align:middle;}
+    td:first-child{font-weight:600;color:var(--navy);}
+    .badge{font-size:11px;font-weight:600;letter-spacing:.05em;padding:3px 8px;border-radius:10px;display:inline-block;white-space:nowrap;}
+    .b-part{background:rgba(201,168,76,.15);color:#8B6914;border:1px solid rgba(201,168,76,.35);}
+    .b-vol{background:rgba(27,58,107,.1);color:var(--navy);border:1px solid rgba(27,58,107,.2);}
+    .b-judge{background:rgba(46,125,82,.1);color:var(--success);border:1px solid rgba(46,125,82,.2);}
+    .b-ns{background:rgba(107,107,107,.1);color:var(--muted);border:1px solid rgba(107,107,107,.2);}
+    .del-btn{background:none;border:none;cursor:pointer;color:#ccc;font-size:15px;padding:3px 7px;transition:color .15s;}
+    .del-btn:hover{color:var(--error);}
+    .empty{text-align:center;padding:40px 20px;color:var(--muted);font-style:italic;font-size:16px;}
+    .empty strong{display:block;font-family:'Playfair Display',serif;font-size:19px;color:var(--navy);margin-bottom:6px;font-style:normal;}
+    /* FILTER BAR */
+    .filter-bar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+    .srch{flex:1;min-width:180px;padding:9px 13px;border:1.5px solid var(--border);border-radius:3px;font-family:'Crimson Pro',serif;font-size:15px;color:var(--ink);outline:none;}
+    .srch:focus{border-color:var(--navy);}
+    .flt{padding:9px 13px;border:1.5px solid var(--border);border-radius:3px;font-family:'Crimson Pro',serif;font-size:15px;color:var(--ink);background:var(--white);outline:none;}
+    /* ADD FORM */
+    .add-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .add-grid .full{grid-column:1/-1;}
+    .fgroup{display:flex;flex-direction:column;gap:5px;}
+    .flbl{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--navy);}
+    .finp,.fsel{padding:10px 13px;border:1.5px solid var(--border);border-radius:3px;font-family:'Crimson Pro',serif;font-size:15px;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s;}
+    .finp:focus,.fsel:focus{border-color:var(--navy);}
+    .add-actions{display:flex;gap:10px;align-items:center;grid-column:1/-1;margin-top:4px;}
+    .add-btn{background:linear-gradient(135deg,var(--navy-deep),var(--navy));color:var(--white);font-family:'Playfair Display',serif;font-size:14px;font-weight:700;padding:11px 26px;border:none;border-radius:3px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+    .add-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold-light),var(--gold));}
+    .add-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(27,58,107,.3);}
+    .clr-btn{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'Crimson Pro',serif;font-size:14px;padding:10px 18px;border-radius:3px;cursor:pointer;transition:all .15s;}
+    .clr-btn:hover{border-color:var(--navy);color:var(--navy);}
+    .toast{display:none;padding:11px 14px;background:rgba(46,125,82,.1);border:1px solid rgba(46,125,82,.3);border-left:4px solid var(--success);border-radius:3px;font-size:14px;color:var(--success);grid-column:1/-1;}
+    .toast.show{display:block;}
+    /* IMPORT PANEL */
+    .import-box{background:var(--gold-pale);border:1.5px solid var(--border);border-left:4px solid var(--gold);border-radius:3px;padding:18px 20px;margin-bottom:20px;}
+    .import-box h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:8px;}
+    .import-box p{font-size:15px;color:var(--muted);font-style:italic;line-height:1.6;margin-bottom:12px;}
+    .import-input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:3px;font-family:'Crimson Pro',serif;font-size:15px;margin-bottom:10px;outline:none;}
+    .import-input:focus{border-color:var(--navy);}
+    .import-result{font-size:14px;margin-top:8px;padding:8px 12px;border-radius:3px;}
+    .import-result.ok{background:rgba(46,125,82,.1);color:var(--success);border-left:3px solid var(--success);}
+    .import-result.err{background:rgba(184,50,50,.08);color:var(--error);border-left:3px solid var(--error);}
+    /* GROUP GRID */
+    .group-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+    .grp-card{background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+    .grp-head{background:var(--navy-deep);padding:9px 13px;border-bottom:2px solid var(--gold);}
+    .grp-name{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--gold);}
+    .grp-cnt{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;}
+    .grp-body{padding:10px 13px;min-height:70px;}
+    .grp-member{font-size:12px;padding:3px 0;border-bottom:1px solid #f0ede6;display:flex;justify-content:space-between;}
+    .grp-member:last-child{border-bottom:none;}
+    .m-age{font-size:10px;color:var(--muted);}
+    .grp-empty{font-size:12px;color:var(--muted);font-style:italic;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .page.active>*{animation:fadeUp .35s ease both;}
+    @media(max-width:900px){.sidebar{width:54px;}.brand,.brand-sub,.nav-item span,.nav-lbl,.sidebar-foot{display:none;}.main{margin-left:54px;}.stats-row{grid-template-columns:1fr 1fr;}.g2,.g3{grid-template-columns:1fr;}.group-grid{grid-template-columns:repeat(3,1fr);}}
   </style>
 </head>
 <body>
@@ -395,871 +139,460 @@
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <span class="sidebar-brand">Verse<span>Quest</span>4Fs</span>
-    <span class="sidebar-subtitle">Team Dashboard</span>
+    <span class="brand">Verse<span>Quest</span>4Fs</span>
+    <span class="brand-sub">Team Dashboard</span>
   </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">Overview</div>
-    <a class="nav-item active" onclick="showPage('overview')" href="#">
-      <span class="nav-icon">📊</span><span>Overview</span>
-    </a>
-    <a class="nav-item" onclick="showPage('registrations')" href="#">
-      <span class="nav-icon">📋</span><span>Registrations</span>
-    </a>
-    <a class="nav-item" onclick="showPage('add')" href="#">
-      <span class="nav-icon">➕</span><span>Add Entry</span>
-    </a>
-    <div class="nav-section-label">Session</div>
-    <a class="nav-item" onclick="showPage('groups')" href="#">
-      <span class="nav-icon">👥</span><span>Group Planner</span>
-    </a>
-    <a class="nav-item" onclick="showPage('categories')" href="#">
-      <span class="nav-icon">📈</span><span>Categories</span>
-    </a>
+  <nav class="nav">
+    <div class="nav-lbl">Overview</div>
+    <a class="nav-item active" href="#" onclick="showPage('overview');return false;"><span class="nav-icon">&#128202;</span><span>Overview</span></a>
+    <a class="nav-item" href="#" onclick="showPage('registrations');return false;"><span class="nav-icon">&#128203;</span><span>Registrations</span></a>
+    <a class="nav-item" href="#" onclick="showPage('add');return false;"><span class="nav-icon">&#43;</span><span>Add Entry</span></a>
+    <div class="nav-lbl">Session</div>
+    <a class="nav-item" href="#" onclick="showPage('groups');return false;"><span class="nav-icon">&#128101;</span><span>Group Planner</span></a>
+    <a class="nav-item" href="#" onclick="showPage('categories');return false;"><span class="nav-icon">&#128200;</span><span>Categories</span></a>
+    <a class="nav-item" href="#" onclick="showPage('import');return false;"><span class="nav-icon">&#128279;</span><span>Import from Sheets</span></a>
   </nav>
-  <div class="sidebar-footer">
-    VerseQuest4Fs &copy; 2026
-  </div>
+  <div class="sidebar-foot">VerseQuest4Fs &copy; 2026</div>
 </aside>
 
 <!-- MAIN -->
 <main class="main">
-
-  <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-title">VerseQuest4Fs &mdash; <span id="pageTitle">Overview</span></div>
     <div class="topbar-right">
-      <div class="spots-pill" id="spotsPill">24 places remaining</div>
-      <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+      <span class="sync-status" id="syncStatus">Local data</span>
+      <span class="pill" id="spotsPill">24 places remaining</span>
+      <button class="top-btn navy" onclick="showPage('import');return false;">&#128279; Sync Sheets</button>
+      <button class="top-btn gold" onclick="exportCSV()">Export CSV</button>
     </div>
   </div>
 
   <div class="content">
 
-    <!-- ═══════════════════════════════════════
-         PAGE: OVERVIEW
-    ════════════════════════════════════════ -->
-    <div class="page-section active" id="page-overview">
-
-      <!-- STAT CARDS -->
+    <!-- OVERVIEW -->
+    <div class="page active" id="page-overview">
       <div class="stats-row">
-        <div class="stat-card highlight">
-          <span class="stat-label">Total Registrations</span>
-          <span class="stat-value" id="stat-total">0</span>
-          <div class="stat-sub">All roles combined</div>
-        </div>
-        <div class="stat-card warn">
-          <span class="stat-label">Participants</span>
-          <span class="stat-value" id="stat-participants">0</span>
-          <div class="stat-sub" id="stat-spots-left">24 places remaining</div>
-        </div>
-        <div class="stat-card success-card">
-          <span class="stat-label">Volunteers / Judges</span>
-          <span class="stat-value" id="stat-support">0</span>
-          <div class="stat-sub">Supporting the session</div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Accessibility Needs</span>
-          <span class="stat-value" id="stat-access">0</span>
-          <div class="stat-sub">Require support</div>
-        </div>
+        <div class="stat gold"><span class="stat-lbl">Total Registrations</span><span class="stat-val" id="s-total">0</span><div class="stat-sub">All roles combined</div></div>
+        <div class="stat red"><span class="stat-lbl">Participants</span><span class="stat-val" id="s-part">0</span><div class="stat-sub" id="s-rem">24 places remaining</div></div>
+        <div class="stat green"><span class="stat-lbl">Volunteers &amp; Judges</span><span class="stat-val" id="s-supp">0</span><div class="stat-sub">Supporting the session</div></div>
+        <div class="stat blue"><span class="stat-lbl">Accessibility Needs</span><span class="stat-val" id="s-acc">0</span><div class="stat-sub">Require support</div></div>
       </div>
-
-      <div class="grid-2">
-
-        <!-- PARTICIPANT PROGRESS -->
+      <div class="g2">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Participant Places</span>
-            <span class="panel-badge" id="prog-badge">0 / 24</span>
-          </div>
+          <div class="panel-head"><span class="panel-title">Participant <span>Capacity</span></span><span class="panel-badge" id="ring-badge">0 / 24</span></div>
           <div class="panel-body">
-            <div class="progress-ring-wrap">
-              <svg width="160" height="160" viewBox="0 0 160 160">
-                <circle cx="80" cy="80" r="64" fill="none" stroke="#f0ede6" stroke-width="16"/>
-                <circle id="progressRing" cx="80" cy="80" r="64" fill="none"
-                  stroke="url(#ringGrad)" stroke-width="16"
-                  stroke-dasharray="402" stroke-dashoffset="402"
-                  stroke-linecap="round"
-                  transform="rotate(-90 80 80)"
-                  style="transition: stroke-dashoffset 0.8s ease;"/>
-                <defs>
-                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#1B3A6B"/>
-                    <stop offset="100%" stop-color="#C9A84C"/>
-                  </linearGradient>
-                </defs>
-                <text x="80" y="72" text-anchor="middle" font-family="Georgia,serif"
-                  font-size="32" font-weight="900" fill="#1B3A6B" id="ringNumber">0</text>
-                <text x="80" y="94" text-anchor="middle" font-family="Georgia,serif"
-                  font-size="13" fill="#6B6B6B">of 24</text>
+            <div class="ring-wrap">
+              <svg width="150" height="150" viewBox="0 0 150 150">
+                <circle cx="75" cy="75" r="60" fill="none" stroke="#f0ede6" stroke-width="15"/>
+                <circle id="ringCircle" cx="75" cy="75" r="60" fill="none" stroke="url(#rg)" stroke-width="15" stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round" transform="rotate(-90 75 75)" style="transition:stroke-dashoffset .8s ease;"/>
+                <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1B3A6B"/><stop offset="100%" stop-color="#C9A84C"/></linearGradient></defs>
+                <text x="75" y="68" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="900" fill="#1B3A6B" id="ringNum">0</text>
+                <text x="75" y="87" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#6B6B6B">of 24</text>
               </svg>
-              <div class="progress-ring-label">Participant spots filled<br/>
-                <strong id="ring-pct" style="color:var(--gold);font-family:'Playfair Display',serif;">0% capacity</strong>
-              </div>
+              <div class="ring-lbl">Participant spots filled<br/><span class="ring-pct" id="ringPct">0% capacity</span></div>
             </div>
           </div>
         </div>
-
-        <!-- ROLE BREAKDOWN -->
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Role <span>Breakdown</span></span>
-          </div>
-          <div class="panel-body">
-            <div class="bar-chart" id="roleChart">
-              <div class="empty-state" style="padding:20px;">No registrations yet</div>
-            </div>
-          </div>
+          <div class="panel-head"><span class="panel-title">Role <span>Breakdown</span></span></div>
+          <div class="panel-body"><div class="bar-chart" id="roleChart"><div class="empty">No data yet</div></div></div>
         </div>
-
       </div>
-
-      <div class="grid-2">
-
-        <!-- AGE BREAKDOWN -->
+      <div class="g2">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Age <span>Groups</span></span>
-          </div>
-          <div class="panel-body">
-            <div class="bar-chart" id="ageChart">
-              <div class="empty-state" style="padding:20px;">No registrations yet</div>
-            </div>
-          </div>
+          <div class="panel-head"><span class="panel-title">Age <span>Groups</span></span></div>
+          <div class="panel-body"><div class="bar-chart" id="ageChart"><div class="empty">No data yet</div></div></div>
         </div>
-
-        <!-- HOW HEARD -->
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">How They <span>Heard About Us</span></span>
-          </div>
-          <div class="panel-body">
-            <div class="bar-chart" id="heardChart">
-              <div class="empty-state" style="padding:20px;">No registrations yet</div>
-            </div>
-          </div>
+          <div class="panel-head"><span class="panel-title">How They <span>Heard</span></span></div>
+          <div class="panel-body"><div class="bar-chart" id="heardChart"><div class="empty">No data yet</div></div></div>
         </div>
-
       </div>
-
-      <!-- RECENT REGISTRATIONS -->
       <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">Recent <span>Registrations</span></span>
-          <span class="panel-badge" id="recent-badge">Latest 5</span>
-        </div>
+        <div class="panel-head"><span class="panel-title">Recent <span>Registrations</span></span><span class="panel-badge">Latest 5</span></div>
         <div class="panel-body" style="padding:0;">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Role</th>
-                  <th>Age Group</th>
-                  <th>Email</th>
-                  <th>Submitted</th>
-                </tr>
-              </thead>
-              <tbody id="recentTable">
-                <tr><td colspan="5" class="empty-state"><strong>No registrations yet</strong>Add your first entry using the Add Entry page.</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Name</th><th>Role</th><th>Age Group</th><th>Email</th><th>Submitted</th></tr></thead>
+            <tbody id="recentTbl"><tr><td colspan="5" class="empty"><strong>No registrations yet</strong>Use Add Entry or Import from Sheets.</td></tr></tbody>
+          </table></div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /overview -->
-
-
-    <!-- ═══════════════════════════════════════
-         PAGE: REGISTRATIONS
-    ════════════════════════════════════════ -->
-    <div class="page-section" id="page-registrations">
-
+    <!-- REGISTRATIONS -->
+    <div class="page" id="page-registrations">
       <div class="filter-bar">
-        <input class="search-input" type="text" id="searchInput"
-          placeholder="Search by name or email..." oninput="renderRegistrationsTable()"/>
-        <select class="filter-select" id="filterRole" onchange="renderRegistrationsTable()">
+        <input class="srch" type="text" id="searchInp" placeholder="Search by name or email..." oninput="renderAllTable()"/>
+        <select class="flt" id="fltRole" onchange="renderAllTable()">
           <option value="">All Roles</option>
-          <option value="Participant">Participant</option>
-          <option value="Volunteer">Volunteer</option>
-          <option value="Judge">Judge</option>
-          <option value="Not sure">Not sure</option>
+          <option>Participant</option><option>Volunteer</option><option>Judge</option><option>Not sure</option>
         </select>
-        <select class="filter-select" id="filterAge" onchange="renderRegistrationsTable()">
+        <select class="flt" id="fltAge" onchange="renderAllTable()">
           <option value="">All Ages</option>
-          <option value="Child (under 12)">Child</option>
-          <option value="Teenager (12-17)">Teenager</option>
-          <option value="Young Adult (18-30)">Young Adult</option>
-          <option value="Adult (31-60)">Adult</option>
-          <option value="Senior (61 and above)">Senior</option>
+          <option>Child (under 12)</option><option>Teenager (12-17)</option>
+          <option>Young Adult (18-30)</option><option>Adult (31-60)</option><option>Senior (61 and above)</option>
         </select>
       </div>
-
       <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">All <span>Registrations</span></span>
-          <span class="panel-badge" id="all-badge">0 records</span>
-        </div>
+        <div class="panel-head"><span class="panel-title">All <span>Registrations</span></span><span class="panel-badge" id="allBadge">0 records</span></div>
         <div class="panel-body" style="padding:0;">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Role</th>
-                  <th>Age Group</th>
-                  <th>Contact</th>
-                  <th>Email</th>
-                  <th>How Heard</th>
-                  <th>Access Needs</th>
-                  <th>Submitted</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="allTable">
-                <tr><td colspan="10" class="empty-state"><strong>No registrations yet</strong>Add entries manually or they will appear here automatically.</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>#</th><th>Name</th><th>Role</th><th>Age</th><th>Contact</th><th>Email</th><th>How Heard</th><th>Access Needs</th><th>Submitted</th><th></th></tr></thead>
+            <tbody id="allTbl"><tr><td colspan="10" class="empty"><strong>No registrations yet</strong></td></tr></tbody>
+          </table></div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /registrations -->
-
-
-    <!-- ═══════════════════════════════════════
-         PAGE: ADD ENTRY
-    ════════════════════════════════════════ -->
-    <div class="page-section" id="page-add">
-
-      <div class="panel" style="max-width:720px;">
-        <div class="panel-header">
-          <span class="panel-title">Add <span>Registration Entry</span></span>
-        </div>
+    <!-- ADD ENTRY -->
+    <div class="page" id="page-add">
+      <div class="panel" style="max-width:700px;">
+        <div class="panel-head"><span class="panel-title">Add <span>Registration Entry</span></span></div>
         <div class="panel-body">
-          <p style="font-size:15px;color:var(--muted);font-style:italic;margin-bottom:20px;">
-            Manually add a registration received via WhatsApp, phone, or email.
-            Entries submitted through the online form will need to be added here to be tracked.
-          </p>
-          <div class="add-form" id="addForm">
-
-            <div class="field-group">
-              <label class="field-label">Full Name *</label>
-              <input class="field-input" type="text" id="inp-name" placeholder="e.g. Jane Smith"/>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Age Group *</label>
-              <select class="field-select" id="inp-age">
-                <option value="">Select age group</option>
-                <option>Child (under 12)</option>
-                <option>Teenager (12-17)</option>
-                <option>Young Adult (18-30)</option>
-                <option>Adult (31-60)</option>
-                <option>Senior (61 and above)</option>
-                <option>Prefer not to say</option>
+          <p style="font-size:15px;color:var(--muted);font-style:italic;margin-bottom:18px;">Manually add anyone who registered via WhatsApp, phone or email.</p>
+          <div class="add-grid">
+            <div class="fgroup"><label class="flbl">Full Name *</label><input class="finp" type="text" id="a-name" placeholder="e.g. Jane Smith"/></div>
+            <div class="fgroup"><label class="flbl">Age Group *</label>
+              <select class="fsel" id="a-age">
+                <option value="">Select...</option>
+                <option>Child (under 12)</option><option>Teenager (12-17)</option>
+                <option>Young Adult (18-30)</option><option>Adult (31-60)</option>
+                <option>Senior (61 and above)</option><option>Prefer not to say</option>
               </select>
             </div>
-            <div class="field-group">
-              <label class="field-label">Contact Number</label>
-              <input class="field-input" type="tel" id="inp-contact" placeholder="e.g. 07700 900123"/>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Email Address</label>
-              <input class="field-input" type="email" id="inp-email" placeholder="e.g. name@email.com"/>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Role *</label>
-              <select class="field-select" id="inp-role">
-                <option value="">Select role</option>
-                <option value="Participant">Participant (competing member)</option>
-                <option value="Volunteer">Volunteer helper / organiser</option>
+            <div class="fgroup"><label class="flbl">Contact Number</label><input class="finp" type="tel" id="a-contact" placeholder="e.g. 07700 900123"/></div>
+            <div class="fgroup"><label class="flbl">Email Address</label><input class="finp" type="email" id="a-email" placeholder="e.g. name@email.com"/></div>
+            <div class="fgroup"><label class="flbl">Role *</label>
+              <select class="fsel" id="a-role">
+                <option value="">Select...</option>
+                <option value="Participant">Participant (competing)</option>
+                <option value="Volunteer">Volunteer helper</option>
                 <option value="Judge">Storytelling judge</option>
                 <option value="Not sure">Not sure yet</option>
               </select>
             </div>
-            <div class="field-group">
-              <label class="field-label">How They Heard</label>
-              <select class="field-select" id="inp-heard">
-                <option value="">Select source</option>
-                <option>Friend or family member</option>
-                <option>Church announcement</option>
-                <option>Social media (Facebook)</option>
-                <option>Social media (Instagram)</option>
-                <option>WhatsApp message</option>
-                <option>Community notice board</option>
-                <option>Church newsletter</option>
-                <option>Other</option>
+            <div class="fgroup"><label class="flbl">How They Heard</label>
+              <select class="fsel" id="a-heard">
+                <option value="">Select...</option>
+                <option>Friend or family member</option><option>Church announcement</option>
+                <option>Facebook</option><option>Instagram</option><option>WhatsApp message</option>
+                <option>Community notice board</option><option>Church newsletter</option><option>Other</option>
               </select>
             </div>
-            <div class="field-group full-width">
-              <label class="field-label">Accessibility or Additional Needs</label>
-              <input class="field-input" type="text" id="inp-access" placeholder="Leave blank if none"/>
-            </div>
-
-            <div class="success-toast" id="addToast">
-              Registration added successfully!
-            </div>
-
+            <div class="fgroup full"><label class="flbl">Accessibility or Additional Needs</label><input class="finp" type="text" id="a-access" placeholder="Leave blank if none"/></div>
+            <div class="toast" id="addToast">Registration added successfully!</div>
             <div class="add-actions">
-              <button class="add-btn" onclick="addRegistration()">Add Registration</button>
-              <button class="clear-btn" onclick="clearAddForm()">Clear Form</button>
+              <button class="add-btn" onclick="addEntry()">Add Registration</button>
+              <button class="clr-btn" onclick="clearAddForm()">Clear</button>
             </div>
-
           </div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /add -->
-
-
-    <!-- ═══════════════════════════════════════
-         PAGE: GROUP PLANNER
-    ════════════════════════════════════════ -->
-    <div class="page-section" id="page-groups">
-
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+    <!-- GROUP PLANNER -->
+    <div class="page" id="page-groups">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
         <div>
-          <h2 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);">Group Planner</h2>
-          <p style="font-size:14px;color:var(--muted);font-style:italic;margin-top:4px;">Automatically assigns participants into 6 groups of 4 based on registration order</p>
+          <h2 style="font-family:'Playfair Display',serif;font-size:19px;color:var(--navy);">Group Planner</h2>
+          <p style="font-size:14px;color:var(--muted);font-style:italic;margin-top:3px;">Assigns participants into 6 groups of 4</p>
         </div>
-        <button class="add-btn" onclick="autoAssignGroups()" style="white-space:nowrap;">Auto-Assign Groups</button>
+        <button class="add-btn" onclick="autoAssign()">Auto-Assign Groups</button>
       </div>
+      <div class="group-grid" id="groupGrid"></div>
+    </div>
 
-      <div class="group-grid" id="groupGrid">
-        <!-- Generated by JS -->
+    <!-- CATEGORIES -->
+    <div class="page" id="page-categories">
+      <div class="g3">
+        <div class="panel"><div class="panel-head"><span class="panel-title">Age <span>Distribution</span></span></div><div class="panel-body"><div class="bar-chart" id="ageFull"><div class="empty">No data</div></div></div></div>
+        <div class="panel"><div class="panel-head"><span class="panel-title">Role <span>Distribution</span></span></div><div class="panel-body"><div class="bar-chart" id="roleFull"><div class="empty">No data</div></div></div></div>
+        <div class="panel"><div class="panel-head"><span class="panel-title">Accessibility <span>Needs</span></span></div><div class="panel-body"><div id="accessList"><div class="empty">No data</div></div></div></div>
       </div>
+      <div class="panel"><div class="panel-head"><span class="panel-title">Registration <span>Sources</span></span></div><div class="panel-body"><div class="bar-chart" id="heardFull"><div class="empty">No data</div></div></div></div>
+    </div>
 
-    </div><!-- /groups -->
-
-
-    <!-- ═══════════════════════════════════════
-         PAGE: CATEGORIES
-    ════════════════════════════════════════ -->
-    <div class="page-section" id="page-categories">
-
-      <div class="grid-3">
-
-        <!-- AGE FULL -->
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Age <span>Distribution</span></span>
-          </div>
-          <div class="panel-body">
-            <div class="bar-chart" id="ageFull">
-              <div class="empty-state" style="padding:20px;">No data yet</div>
-            </div>
-          </div>
+    <!-- IMPORT FROM SHEETS -->
+    <div class="page" id="page-import">
+      <div class="import-box">
+        <h3>Import Live Data from Google Sheets</h3>
+        <p>Paste your Google Apps Script Web App URL below and click Import. The dashboard will fetch all current registrations from your Google Sheet and display them here.</p>
+        <input class="import-input" type="text" id="sheetsUrlInp"
+          placeholder="https://script.google.com/macros/s/..."
+          value="https://script.google.com/macros/s/AKfycbx0IYTl9IVfFQBYVdNQqX_UBLtMbHsR-9mz931MPdGUtyhEUApyLmJXr2GLKedBA4ORMA/exec"/>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="add-btn" onclick="importFromSheets()">Import from Sheets</button>
+          <button class="clr-btn" onclick="clearAllData()">Clear All Local Data</button>
         </div>
-
-        <!-- ROLE FULL -->
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Role <span>Distribution</span></span>
-          </div>
-          <div class="panel-body">
-            <div class="bar-chart" id="roleFull">
-              <div class="empty-state" style="padding:20px;">No data yet</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ACCESSIBILITY -->
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Accessibility <span>Needs</span></span>
-          </div>
-          <div class="panel-body">
-            <div id="accessList">
-              <div class="empty-state" style="padding:20px;">No data yet</div>
-            </div>
-          </div>
-        </div>
-
+        <div class="import-result" id="importResult" style="display:none;"></div>
       </div>
-
-      <!-- HEARD FULL -->
       <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">Registration <span>Sources</span></span>
-        </div>
+        <div class="panel-head"><span class="panel-title">How to keep the dashboard in sync</span></div>
         <div class="panel-body">
-          <div class="bar-chart" id="heardFull">
-            <div class="empty-state" style="padding:20px;">No data yet</div>
-          </div>
+          <p style="font-size:15px;color:var(--muted);line-height:1.8;">
+            1. Every time someone submits the registration form, a row is automatically added to your Google Sheet.<br/>
+            2. Come to this page and click <strong>Import from Sheets</strong> to pull all the latest registrations into the dashboard.<br/>
+            3. The dashboard will then show updated stats, charts and the full registrations table.<br/>
+            4. You can also add entries manually using the <strong>Add Entry</strong> page for anyone who registers via WhatsApp or phone.<br/><br/>
+            <em>Tip: Bookmark this dashboard page and visit it before every planning session to get the latest data.</em>
+          </p>
         </div>
       </div>
+    </div>
 
-    </div><!-- /categories -->
-
-  </div><!-- /content -->
+  </div>
 </main>
 
 <script>
-/* ══════════════════════════════════════════
-   DATA STORE — persists in localStorage
-══════════════════════════════════════════ */
-var MAX_PARTICIPANTS = 24;
-var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx0IYTl9IVfFQBYVdNQqX_UBLtMbHsR-9mz931MPdGUtyhEUApyLmJXr2GLKedBA4ORMA/exec';
+/* ══ DATA STORE ══ */
+var KEY = 'vq4fs_data_v2';
+function load() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e) { return []; } }
+function save(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
 
-/* In-memory cache */
-var _cache = [];
-
-function getData() { return _cache; }
-
-function saveData(data) {
-  _cache = data;
-  localStorage.setItem('vq4fs_local_data', JSON.stringify(data));
-}
-
-function loadData() {
-  try {
-    var raw = localStorage.getItem('vq4fs_local_data');
-    _cache = raw ? JSON.parse(raw) : [];
-  } catch(e) { _cache = []; }
-}
-
-/* Fetch live data from Google Sheets using JSONP to bypass CORS */
-function fetchFromSheets() {
-  var indicator = document.getElementById('syncIndicator');
-  if (indicator) { indicator.textContent = 'Syncing...'; indicator.style.color = 'var(--gold)'; }
-
-  /* Remove any previous JSONP script tag */
-  var old = document.getElementById('sheets-jsonp');
-  if (old) { old.parentNode.removeChild(old); }
-
-  /* Set a timeout in case the script never loads */
-  var timeout = setTimeout(function() {
-    var ind = document.getElementById('syncIndicator');
-    if (ind && ind.textContent === 'Syncing...') {
-      ind.textContent = 'Could not reach Sheets — showing local data';
-      ind.style.color = '#e05c5c';
-    }
-    refreshAll();
-  }, 8000);
-
-  /* JSONP callback — Google Apps Script calls this function with the data */
-  window._sheetsCallback = function(json) {
-    clearTimeout(timeout);
-    var indicator = document.getElementById('syncIndicator');
-    if (json && json.result === 'success' && Array.isArray(json.data)) {
-      _cache = json.data.map(function(row, i) {
-        return {
-          id:        'sheet_' + i,
-          name:      row[0] || '',
-          age:       row[1] || '',
-          contact:   row[2] || '',
-          email:     row[3] || '',
-          role:      row[4] || '',
-          heard:     row[5] || '',
-          access:    row[6] || '',
-          submitted: row[7] || ''
-        };
-      });
-      localStorage.setItem('vq4fs_local_data', JSON.stringify(_cache));
-      if (indicator) {
-        indicator.textContent = 'Synced — ' + _cache.length + ' record' + (_cache.length === 1 ? '' : 's') + ' loaded';
-        indicator.style.color = '#4caf50';
-      }
-    } else {
-      if (indicator) { indicator.textContent = 'No data returned from Sheets'; indicator.style.color = '#e05c5c'; }
-    }
-    refreshAll();
-  };
-
-  /* Inject script tag — this is the JSONP request */
-  var script = document.createElement('script');
-  script.id = 'sheets-jsonp';
-  script.src = SHEETS_URL + '?callback=_sheetsCallback';
-  script.onerror = function() {
-    clearTimeout(timeout);
-    var ind = document.getElementById('syncIndicator');
-    if (ind) { ind.textContent = 'Sheets unavailable — using local data'; ind.style.color = '#e05c5c'; }
-    refreshAll();
-  };
-  document.head.appendChild(script);
-}
-
-
-/* ══════════════════════════════════════════
-   NAVIGATION
-══════════════════════════════════════════ */
-var pageTitles = {
-  overview: 'Overview',
-  registrations: 'All Registrations',
-  add: 'Add Entry',
-  groups: 'Group Planner',
-  categories: 'Category Breakdown'
-};
-
+/* ══ NAVIGATION ══ */
+var titles = { overview:'Overview', registrations:'All Registrations', add:'Add Entry', groups:'Group Planner', categories:'Category Breakdown', import:'Import from Sheets' };
 function showPage(id) {
-  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
-  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(function(n) {
-    if (n.getAttribute('onclick') && n.getAttribute('onclick').indexOf(id) > -1) {
-      n.classList.add('active');
-    }
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  var pg = document.getElementById('page-'+id);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').indexOf("'"+id+"'") > -1) n.classList.add('active');
   });
-  document.getElementById('pageTitle').textContent = pageTitles[id] || id;
+  document.getElementById('pageTitle').textContent = titles[id] || id;
   refreshAll();
-  return false;
 }
 
-/* ══════════════════════════════════════════
-   ADD REGISTRATION
-══════════════════════════════════════════ */
-function addRegistration() {
-  var name    = document.getElementById('inp-name').value.trim();
-  var age     = document.getElementById('inp-age').value;
-  var contact = document.getElementById('inp-contact').value.trim();
-  var email   = document.getElementById('inp-email').value.trim();
-  var role    = document.getElementById('inp-role').value;
-  var heard   = document.getElementById('inp-heard').value;
-  var access  = document.getElementById('inp-access').value.trim();
-
-  if (!name || !age || !role) {
-    alert('Please fill in Name, Age Group and Role at minimum.');
-    return;
-  }
-
-  var data = getData();
-  var participantCount = data.filter(function(r){ return r.role === 'Participant'; }).length;
-
-  if (role === 'Participant' && participantCount >= MAX_PARTICIPANTS) {
-    alert('All 24 participant places are full. You can still add volunteers and judges.');
-    return;
-  }
-
-  var entry = {
-    id:        Date.now(),
-    name:      name,
-    age:       age,
-    contact:   contact,
-    email:     email,
-    role:      role,
-    heard:     heard,
-    access:    access,
-    submitted: new Date().toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })
-  };
-
-  data.push(entry);
-  saveData(data);
+/* ══ ADD ENTRY ══ */
+function addEntry() {
+  var name    = document.getElementById('a-name').value.trim();
+  var age     = document.getElementById('a-age').value;
+  var contact = document.getElementById('a-contact').value.trim();
+  var email   = document.getElementById('a-email').value.trim();
+  var role    = document.getElementById('a-role').value;
+  var heard   = document.getElementById('a-heard').value;
+  var access  = document.getElementById('a-access').value.trim();
+  if (!name || !age || !role) { alert('Please fill in Name, Age Group and Role at minimum.'); return; }
+  var data = load();
+  var participants = data.filter(function(r){ return r.role === 'Participant'; }).length;
+  if (role === 'Participant' && participants >= 24) { alert('All 24 participant places are full.'); return; }
+  data.push({ id: Date.now(), name:name, age:age, contact:contact, email:email, role:role, heard:heard, access:access, submitted: new Date().toLocaleString('en-GB', {dateStyle:'short',timeStyle:'short'}) });
+  save(data);
   refreshAll();
   clearAddForm();
-
-  var toast = document.getElementById('addToast');
-  toast.classList.add('show');
-  setTimeout(function() { toast.classList.remove('show'); }, 3000);
+  var t = document.getElementById('addToast'); t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
 }
-
 function clearAddForm() {
-  ['inp-name','inp-contact','inp-email','inp-access'].forEach(function(id) {
-    document.getElementById(id).value = '';
-  });
-  ['inp-age','inp-role','inp-heard'].forEach(function(id) {
-    document.getElementById(id).value = '';
-  });
+  ['a-name','a-contact','a-email','a-access'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['a-age','a-role','a-heard'].forEach(function(id){ document.getElementById(id).value=''; });
 }
 
-function deleteEntry(id) {
+/* ══ DELETE ══ */
+function delEntry(id) {
   if (!confirm('Remove this registration?')) return;
-  var data = getData().filter(function(r){ return r.id !== id; });
-  saveData(data);
+  save(load().filter(function(r){ return r.id !== id; }));
   refreshAll();
 }
 
-/* ══════════════════════════════════════════
-   REFRESH ALL VIEWS
-══════════════════════════════════════════ */
+/* ══ IMPORT FROM SHEETS ══ */
+function importFromSheets() {
+  var url = document.getElementById('sheetsUrlInp').value.trim();
+  if (!url) { alert('Please enter your Web App URL first.'); return; }
+  var res = document.getElementById('importResult');
+  res.style.display = 'block';
+  res.className = 'import-result';
+  res.textContent = 'Fetching from Google Sheets...';
+  document.getElementById('syncStatus').textContent = 'Syncing...';
+
+  /* Use a script tag (JSONP) to bypass CORS */
+  var old = document.getElementById('__sjsonp');
+  if (old) old.parentNode.removeChild(old);
+
+  var timer = setTimeout(function() {
+    res.className = 'import-result err';
+    res.textContent = 'Request timed out. Check the URL is correct, the deployment is set to "Anyone" access, and try again.';
+    document.getElementById('syncStatus').textContent = 'Sync failed';
+  }, 10000);
+
+  window.__sheetsImportCb = function(json) {
+    clearTimeout(timer);
+    if (json && json.result === 'success' && Array.isArray(json.data)) {
+      var rows = json.data.filter(function(r){ return r[0] && r[0].length > 0; });
+      var imported = rows.map(function(row, i) {
+        return { id: 'sh_'+i+'_'+Date.now(), name:row[0]||'', age:row[1]||'', contact:row[2]||'', email:row[3]||'', role:row[4]||'', heard:row[5]||'', access:row[6]||'', submitted:row[7]||'' };
+      });
+      save(imported);
+      refreshAll();
+      res.className = 'import-result ok';
+      res.textContent = 'Success! ' + imported.length + ' registration' + (imported.length===1?'':' s') + ' imported from Google Sheets.';
+      document.getElementById('syncStatus').textContent = 'Synced — ' + imported.length + ' records';
+    } else {
+      res.className = 'import-result err';
+      res.textContent = 'Sheets returned no data. Make sure your sheet has rows and the doGet function is deployed correctly.';
+      document.getElementById('syncStatus').textContent = 'No data returned';
+    }
+  };
+
+  var s = document.createElement('script');
+  s.id = '__sjsonp';
+  s.src = url + '?callback=__sheetsImportCb&t=' + Date.now();
+  s.onerror = function() {
+    clearTimeout(timer);
+    res.className = 'import-result err';
+    res.textContent = 'Could not reach Google Sheets. Check the URL and that access is set to "Anyone".';
+    document.getElementById('syncStatus').textContent = 'Connection failed';
+  };
+  document.head.appendChild(s);
+}
+
+function clearAllData() {
+  if (!confirm('This will remove ALL locally stored registrations. This cannot be undone.\n\nAre you sure?')) return;
+  localStorage.removeItem(KEY);
+  refreshAll();
+  alert('All local data cleared. Use Import from Sheets to reload.');
+}
+
+/* ══ REFRESH ALL ══ */
 function refreshAll() {
-  var data = getData();
+  var data = load();
   updateStats(data);
-  updateProgressRing(data);
+  updateRing(data);
   renderCharts(data);
   renderRecentTable(data);
-  renderRegistrationsTable();
+  renderAllTable();
   renderGroups(data);
-  renderCategories(data);
 }
 
-/* ══════════════════════════════════════════
-   STATS
-══════════════════════════════════════════ */
+/* ══ STATS ══ */
 function updateStats(data) {
-  var participants = data.filter(function(r){ return r.role === 'Participant'; }).length;
-  var support      = data.filter(function(r){ return r.role === 'Volunteer' || r.role === 'Judge'; }).length;
-  var access       = data.filter(function(r){ return r.access && r.access.length > 0; }).length;
-  var remaining    = Math.max(0, MAX_PARTICIPANTS - participants);
-
-  document.getElementById('stat-total').textContent        = String(data.length);
-  document.getElementById('stat-participants').textContent  = String(participants);
-  document.getElementById('stat-support').textContent      = String(support);
-  document.getElementById('stat-access').textContent       = String(access);
-  document.getElementById('stat-spots-left').textContent   = remaining + ' places remaining';
-  document.getElementById('spotsPill').textContent         = remaining + ' places remaining';
-  document.getElementById('all-badge').textContent         = data.length + ' records';
+  var parts = data.filter(function(r){ return r.role==='Participant'; }).length;
+  var supp  = data.filter(function(r){ return r.role==='Volunteer'||r.role==='Judge'; }).length;
+  var acc   = data.filter(function(r){ return r.access && r.access.length > 0; }).length;
+  var rem   = Math.max(0, 24 - parts);
+  document.getElementById('s-total').textContent = String(data.length);
+  document.getElementById('s-part').textContent  = String(parts);
+  document.getElementById('s-supp').textContent  = String(supp);
+  document.getElementById('s-acc').textContent   = String(acc);
+  document.getElementById('s-rem').textContent   = rem+' places remaining';
+  document.getElementById('spotsPill').textContent= rem+' places remaining';
+  document.getElementById('allBadge').textContent = data.length+' records';
 }
 
-/* ══════════════════════════════════════════
-   PROGRESS RING
-══════════════════════════════════════════ */
-function updateProgressRing(data) {
-  var participants = data.filter(function(r){ return r.role === 'Participant'; }).length;
-  var pct = Math.min(1, participants / MAX_PARTICIPANTS);
-  var circumference = 2 * Math.PI * 64;
-  var offset = circumference * (1 - pct);
-
-  document.getElementById('progressRing').style.strokeDashoffset = String(offset);
-  document.getElementById('ringNumber').textContent = String(participants);
-  document.getElementById('ring-pct').textContent = Math.round(pct * 100) + '% capacity';
-  document.getElementById('prog-badge').textContent = participants + ' / 24';
+/* ══ PROGRESS RING ══ */
+function updateRing(data) {
+  var parts = data.filter(function(r){ return r.role==='Participant'; }).length;
+  var pct = Math.min(1, parts/24);
+  var circ = 2*Math.PI*60;
+  document.getElementById('ringCircle').style.strokeDashoffset = String(circ*(1-pct));
+  document.getElementById('ringNum').textContent = String(parts);
+  document.getElementById('ringPct').textContent = Math.round(pct*100)+'% capacity';
+  document.getElementById('ring-badge').textContent = parts+' / 24';
 }
 
-/* ══════════════════════════════════════════
-   CHARTS
-══════════════════════════════════════════ */
+/* ══ CHARTS ══ */
 function countBy(data, field) {
-  var counts = {};
-  data.forEach(function(r) {
-    var val = r[field] || 'Unknown';
-    counts[val] = (counts[val] || 0) + 1;
-  });
-  return counts;
+  var c={};
+  data.forEach(function(r){ var v=r[field]||'Unknown'; c[v]=(c[v]||0)+1; });
+  return c;
 }
-
-function renderBarChart(containerId, counts, colorClass, total) {
-  var container = document.getElementById(containerId);
-  if (!container) return;
-  var keys = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; });
-  if (keys.length === 0) {
-    container.innerHTML = '<div class="empty-state" style="padding:20px;">No data yet</div>';
-    return;
-  }
+function renderBar(id, counts, cls) {
+  var el = document.getElementById(id); if (!el) return;
+  var keys = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+  if (keys.length===0){ el.innerHTML='<div class="empty">No data yet</div>'; return; }
   var max = Math.max.apply(null, keys.map(function(k){ return counts[k]; }));
-  var html = '';
-  keys.forEach(function(k) {
-    var n = counts[k];
-    var w = Math.round((n / (total || max)) * 100);
-    html += '<div class="bar-row">' +
-      '<span class="bar-label" title="' + k + '">' + k + '</span>' +
-      '<div class="bar-track"><div class="bar-fill ' + (colorClass||'') + '" style="width:' + w + '%"></div></div>' +
-      '<span class="bar-count">' + n + '</span>' +
-    '</div>';
-  });
-  container.innerHTML = html;
+  el.innerHTML = keys.map(function(k){
+    var w = Math.round((counts[k]/max)*100);
+    return '<div class="bar-row"><span class="bar-lbl" title="'+k+'">'+k+'</span><div class="bar-track"><div class="bar-fill '+cls+'" style="width:'+w+'%"></div></div><span class="bar-n">'+counts[k]+'</span></div>';
+  }).join('');
 }
-
 function renderCharts(data) {
-  var total = data.length || 1;
-  renderBarChart('roleChart',  countBy(data, 'role'), 'gold', total);
-  renderBarChart('ageChart',   countBy(data, 'age'),  '',     total);
-  renderBarChart('heardChart', countBy(data, 'heard'),'green',total);
-  renderBarChart('ageFull',    countBy(data, 'age'),  '',     total);
-  renderBarChart('roleFull',   countBy(data, 'role'), 'gold', total);
-  renderBarChart('heardFull',  countBy(data, 'heard'),'green',total);
-
-  /* Accessibility list */
-  var accessEl = document.getElementById('accessList');
-  var withNeeds = data.filter(function(r){ return r.access && r.access.length > 0; });
-  if (withNeeds.length === 0) {
-    accessEl.innerHTML = '<div class="empty-state" style="padding:20px;">No accessibility needs recorded</div>';
-  } else {
-    var html = '<div style="display:flex;flex-direction:column;gap:10px;">';
-    withNeeds.forEach(function(r) {
-      html += '<div style="padding:10px 12px;background:#fff8f8;border-left:3px solid #e05c5c;border-radius:2px;">' +
-        '<strong style="font-size:13px;color:var(--navy);">' + r.name + '</strong>' +
-        '<div style="font-size:13px;color:var(--ink);margin-top:3px;">' + r.access + '</div>' +
-      '</div>';
-    });
-    html += '</div>';
-    accessEl.innerHTML = html;
-  }
+  renderBar('roleChart',  countBy(data,'role'),  'bf-gold');
+  renderBar('ageChart',   countBy(data,'age'),   'bf-navy');
+  renderBar('heardChart', countBy(data,'heard'), 'bf-green');
+  renderBar('ageFull',    countBy(data,'age'),   'bf-navy');
+  renderBar('roleFull',   countBy(data,'role'),  'bf-gold');
+  renderBar('heardFull',  countBy(data,'heard'), 'bf-green');
+  var accEl = document.getElementById('accessList');
+  var needs = data.filter(function(r){ return r.access && r.access.length>0; });
+  if (needs.length===0){ accEl.innerHTML='<div class="empty">No accessibility needs recorded</div>'; return; }
+  accEl.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">'+needs.map(function(r){
+    return '<div style="padding:9px 12px;background:#fff8f8;border-left:3px solid #e05c5c;border-radius:2px;"><strong style="font-size:13px;color:var(--navy);">'+r.name+'</strong><div style="font-size:13px;color:var(--ink);margin-top:2px;">'+r.access+'</div></div>';
+  }).join('')+'</div>';
 }
 
-/* ══════════════════════════════════════════
-   TABLES
-══════════════════════════════════════════ */
-function roleBadge(role) {
-  var cls = 'role-notsure';
-  if (role === 'Participant') cls = 'role-participant';
-  else if (role === 'Volunteer') cls = 'role-volunteer';
-  else if (role === 'Judge') cls = 'role-judge';
-  return '<span class="role-badge ' + cls + '">' + role + '</span>';
+/* ══ TABLES ══ */
+function roleBadge(r) {
+  var cls='b-ns';
+  if(r==='Participant')cls='b-part';else if(r==='Volunteer')cls='b-vol';else if(r==='Judge')cls='b-judge';
+  return '<span class="badge '+cls+'">'+r+'</span>';
 }
-
 function renderRecentTable(data) {
-  var tbody = document.getElementById('recentTable');
+  var tb = document.getElementById('recentTbl');
   var recent = data.slice(-5).reverse();
-  if (recent.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><strong>No registrations yet</strong>Add your first entry using the Add Entry page.</td></tr>';
-    return;
-  }
-  var html = '';
-  recent.forEach(function(r) {
-    html += '<tr>' +
-      '<td>' + r.name + '</td>' +
-      '<td>' + roleBadge(r.role) + '</td>' +
-      '<td>' + (r.age || '—') + '</td>' +
-      '<td style="font-size:13px;">' + (r.email || '—') + '</td>' +
-      '<td style="font-size:12px;color:var(--muted);">' + r.submitted + '</td>' +
-    '</tr>';
+  if (recent.length===0){ tb.innerHTML='<tr><td colspan="5" class="empty"><strong>No registrations yet</strong>Use Add Entry or Import from Sheets.</td></tr>'; return; }
+  tb.innerHTML = recent.map(function(r){ return '<tr><td>'+r.name+'</td><td>'+roleBadge(r.role)+'</td><td style="font-size:13px;">'+r.age+'</td><td style="font-size:13px;">'+(r.email||'&mdash;')+'</td><td style="font-size:12px;color:var(--muted);">'+r.submitted+'</td></tr>'; }).join('');
+}
+function renderAllTable() {
+  var data = load();
+  var srch = (document.getElementById('searchInp')||{}).value||'';
+  var rF   = (document.getElementById('fltRole')||{}).value||'';
+  var aF   = (document.getElementById('fltAge')||{}).value||'';
+  var filtered = data.filter(function(r){
+    return (!srch || r.name.toLowerCase().indexOf(srch.toLowerCase())>-1 || (r.email&&r.email.toLowerCase().indexOf(srch.toLowerCase())>-1))
+      && (!rF || r.role===rF) && (!aF || r.age===aF);
   });
-  tbody.innerHTML = html;
+  var tb = document.getElementById('allTbl');
+  var bdg = document.getElementById('allBadge');
+  if (bdg) bdg.textContent = filtered.length+' records';
+  if (filtered.length===0){ tb.innerHTML='<tr><td colspan="10" class="empty"><strong>No records found</strong></td></tr>'; return; }
+  tb.innerHTML = filtered.map(function(r,i){
+    var accHtml = r.access ? '<span style="color:var(--error);font-size:13px;font-weight:600;">'+r.access+'</span>' : '<span style="color:var(--muted);font-size:13px;">None</span>';
+    return '<tr><td style="color:var(--muted);font-size:12px;">'+(i+1)+'</td><td>'+r.name+'</td><td>'+roleBadge(r.role)+'</td><td style="font-size:13px;">'+r.age+'</td><td style="font-size:13px;">'+(r.contact||'&mdash;')+'</td><td style="font-size:13px;">'+(r.email||'&mdash;')+'</td><td style="font-size:13px;">'+(r.heard||'&mdash;')+'</td><td>'+accHtml+'</td><td style="font-size:12px;color:var(--muted);">'+r.submitted+'</td><td><button class="del-btn" onclick="delEntry('+r.id+')">&#10005;</button></td></tr>';
+  }).join('');
 }
 
-function renderRegistrationsTable() {
-  var data     = getData();
-  var search   = (document.getElementById('searchInput') || {}).value || '';
-  var roleF    = (document.getElementById('filterRole') || {}).value || '';
-  var ageF     = (document.getElementById('filterAge')  || {}).value || '';
-
-  var filtered = data.filter(function(r) {
-    var matchSearch = !search ||
-      r.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      (r.email && r.email.toLowerCase().indexOf(search.toLowerCase()) > -1);
-    var matchRole = !roleF || r.role === roleF;
-    var matchAge  = !ageF  || r.age  === ageF;
-    return matchSearch && matchRole && matchAge;
-  });
-
-  var tbody = document.getElementById('allTable');
-  var badge = document.getElementById('all-badge');
-  if (badge) badge.textContent = filtered.length + ' records';
-
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" class="empty-state"><strong>No records found</strong>Try adjusting your search or filters.</td></tr>';
-    return;
-  }
-
-  var html = '';
-  filtered.forEach(function(r, i) {
-    var accessHtml = r.access
-      ? '<span class="access-yes">' + r.access + '</span>'
-      : '<span class="access-no">None</span>';
-    html += '<tr>' +
-      '<td style="color:var(--muted);font-size:12px;">' + (i+1) + '</td>' +
-      '<td>' + r.name + '</td>' +
-      '<td>' + roleBadge(r.role) + '</td>' +
-      '<td style="font-size:13px;">' + (r.age || '—') + '</td>' +
-      '<td style="font-size:13px;">' + (r.contact || '—') + '</td>' +
-      '<td style="font-size:13px;">' + (r.email || '—') + '</td>' +
-      '<td style="font-size:13px;">' + (r.heard || '—') + '</td>' +
-      '<td>' + accessHtml + '</td>' +
-      '<td style="font-size:12px;color:var(--muted);">' + r.submitted + '</td>' +
-      '<td><button class="delete-btn" onclick="deleteEntry(' + r.id + ')" title="Remove">&#10005;</button></td>' +
-    '</tr>';
-  });
-  tbody.innerHTML = html;
-}
-
-/* ══════════════════════════════════════════
-   GROUP PLANNER
-══════════════════════════════════════════ */
+/* ══ GROUPS ══ */
 function renderGroups(data) {
-  var grid = document.getElementById('groupGrid');
-  var groupData = JSON.parse(localStorage.getItem('vq4fs_groups') || 'null');
+  var stored = JSON.parse(localStorage.getItem('vq4fs_groups')||'null');
+  var grid = document.getElementById('groupGrid'); if (!grid) return;
   var html = '';
-
-  for (var g = 1; g <= 6; g++) {
-    var members = groupData ? (groupData['group' + g] || []) : [];
-    var memberHtml = '';
-    if (members.length === 0) {
-      memberHtml = '<div class="group-empty">No members assigned</div>';
-    } else {
-      members.forEach(function(m) {
-        memberHtml += '<div class="group-member">' +
-          '<span>' + m.name.split(' ')[0] + ' ' + (m.name.split(' ')[1] ? m.name.split(' ')[1][0] + '.' : '') + '</span>' +
-          '<span class="member-age">' + (m.age || '') + '</span>' +
-        '</div>';
-      });
-    }
-    var isFull = members.length >= 4;
-    html += '<div class="group-card">' +
-      '<div class="group-header">' +
-        '<div class="group-name">Group ' + g + '</div>' +
-        '<div class="group-count">' + members.length + ' / 4 members' + (isFull ? ' ✓' : '') + '</div>' +
-      '</div>' +
-      '<div class="group-members">' + memberHtml + '</div>' +
-    '</div>';
+  for (var g=1; g<=6; g++) {
+    var members = stored ? (stored['g'+g]||[]) : [];
+    var mHtml = members.length===0 ? '<div class="grp-empty">No members assigned</div>'
+      : members.map(function(m){ var n=m.name.split(' '); return '<div class="grp-member"><span>'+n[0]+' '+(n[1]?n[1][0]+'.':'')+'</span><span class="m-age">'+(m.age||'')+'</span></div>'; }).join('');
+    html += '<div class="grp-card"><div class="grp-head"><div class="grp-name">Group '+g+'</div><div class="grp-cnt">'+members.length+' / 4'+(members.length>=4?' &#10003;':'')+'</div></div><div class="grp-body">'+mHtml+'</div></div>';
   }
   grid.innerHTML = html;
 }
-
-function autoAssignGroups() {
-  var data = getData();
-  var participants = data.filter(function(r){ return r.role === 'Participant'; });
-
-  if (participants.length === 0) {
-    alert('No participants to assign yet. Add participants first.');
-    return;
-  }
-
-  /* Shuffle for fairness */
-  var shuffled = participants.slice().sort(function(){ return Math.random() - 0.5; });
+function autoAssign() {
+  var data = load();
+  var parts = data.filter(function(r){ return r.role==='Participant'; });
+  if (parts.length===0){ alert('No participants to assign yet.'); return; }
+  var shuffled = parts.slice().sort(function(){ return Math.random()-.5; });
   var groups = {};
-  for (var g = 1; g <= 6; g++) { groups['group' + g] = []; }
-
-  shuffled.forEach(function(p, i) {
-    var groupNum = (i % 6) + 1;
-    if (groups['group' + groupNum].length < 4) {
-      groups['group' + groupNum].push(p);
-    }
-  });
-
+  for (var g=1; g<=6; g++) groups['g'+g]=[];
+  shuffled.forEach(function(p,i){ var gn=(i%6)+1; if(groups['g'+gn].length<4) groups['g'+gn].push(p); });
   localStorage.setItem('vq4fs_groups', JSON.stringify(groups));
   renderGroups(data);
-  alert('Groups assigned! ' + participants.length + ' participants distributed across 6 groups.');
+  alert('Done! '+parts.length+' participant'+(parts.length===1?'':'s')+' distributed across 6 groups.');
 }
 
-/* ══════════════════════════════════════════
-   CATEGORIES PAGE
-══════════════════════════════════════════ */
-function renderCategories(data) {
-  renderCharts(data); /* already handles all category charts */
-}
-
-/* ══════════════════════════════════════════
-   CSV EXPORT
-══════════════════════════════════════════ */
+/* ══ EXPORT CSV ══ */
 function exportCSV() {
-  var data = getData();
-  if (data.length === 0) { alert('No registrations to export yet.'); return; }
-
-  var headers = ['#','Name','Age Group','Contact','Email','Role','How Heard','Accessibility Needs','Submitted'];
-  var rows = data.map(function(r, i) {
-    return [
-      i+1,
-      '"' + r.name + '"',
-      '"' + (r.age||'') + '"',
-      '"' + (r.contact||'') + '"',
-      '"' + (r.email||'') + '"',
-      '"' + (r.role||'') + '"',
-      '"' + (r.heard||'') + '"',
-      '"' + (r.access||'None') + '"',
-      '"' + r.submitted + '"'
-    ].join(',');
-  });
-
-  var csv = headers.join(',') + '\n' + rows.join('\n');
-  var blob = new Blob([csv], { type: 'text/csv' });
+  var data = load();
+  if (data.length===0){ alert('No registrations to export yet.'); return; }
+  var hdr = ['#','Name','Age Group','Contact','Email','Role','How Heard','Accessibility','Submitted'];
+  var rows = data.map(function(r,i){ return [i+1,'"'+r.name+'"','"'+(r.age||'')+'"','"'+(r.contact||'')+'"','"'+(r.email||'')+'"','"'+(r.role||'')+'"','"'+(r.heard||'')+'"','"'+(r.access||'None')+'"','"'+r.submitted+'"'].join(','); });
+  var csv = hdr.join(',')+'\n'+rows.join('\n');
+  var blob = new Blob([csv],{type:'text/csv'});
   var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'VerseQuest4Fs_Registrations_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
+  var a = document.createElement('a'); a.href=url; a.download='VerseQuest4Fs_Registrations_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
   URL.revokeObjectURL(url);
 }
 
-/* ── INIT ── */
-loadData();       /* load any cached local data immediately so dashboard is not blank */
-refreshAll();     /* render with local data first */
-fetchFromSheets(); /* then fetch live data from Google Sheets and re-render */
-
-/* Auto-refresh every 60 seconds */
-setInterval(function() { fetchFromSheets(); }, 60000);
+/* ══ INIT ══ */
+refreshAll();
 </script>
 </body>
 </html>
