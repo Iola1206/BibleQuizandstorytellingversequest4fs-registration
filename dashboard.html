@@ -802,7 +802,7 @@
    DATA STORE — persists in localStorage
 ══════════════════════════════════════════ */
 var MAX_PARTICIPANTS = 24;
-var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxkKLYKobUwHkqQfOF_mRoqBHyGvUPFkEMC03R58qYL06acAM_dix_gISBcKpBzWppJkw/exec';
+var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx0IYTl9IVfFQBYVdNQqX_UBLtMbHsR-9mz931MPdGUtyhEUApyLmJXr2GLKedBA4ORMA/exec';
 
 /* In-memory cache */
 var _cache = [];
@@ -821,40 +821,65 @@ function loadData() {
   } catch(e) { _cache = []; }
 }
 
-/* Fetch live data from Google Sheets */
+/* Fetch live data from Google Sheets using JSONP to bypass CORS */
 function fetchFromSheets() {
   var indicator = document.getElementById('syncIndicator');
-  if (indicator) { indicator.textContent = 'Syncing with Google Sheets...'; indicator.style.color = 'var(--gold)'; }
+  if (indicator) { indicator.textContent = 'Syncing...'; indicator.style.color = 'var(--gold)'; }
 
-  fetch(SHEETS_URL, { method: 'GET', mode: 'cors' })
-    .then(function(res) { return res.json(); })
-    .then(function(json) {
-      if (json && json.data && Array.isArray(json.data)) {
-        _cache = json.data.map(function(row, i) {
-          return {
-            id:        'sheet_' + i + '_' + Date.now(),
-            name:      row[0] || '',
-            age:       row[1] || '',
-            contact:   row[2] || '',
-            email:     row[3] || '',
-            role:      row[4] || '',
-            heard:     row[5] || '',
-            access:    row[6] || '',
-            submitted: row[7] || ''
-          };
-        });
-        localStorage.setItem('vq4fs_local_data', JSON.stringify(_cache));
-        if (indicator) { indicator.textContent = 'Live — synced just now (' + _cache.length + ' records)'; indicator.style.color = '#4caf50'; }
-      } else {
-        if (indicator) { indicator.textContent = 'Sheets returned no data — showing local entries'; indicator.style.color = '#e05c5c'; }
+  /* Remove any previous JSONP script tag */
+  var old = document.getElementById('sheets-jsonp');
+  if (old) { old.parentNode.removeChild(old); }
+
+  /* Set a timeout in case the script never loads */
+  var timeout = setTimeout(function() {
+    var ind = document.getElementById('syncIndicator');
+    if (ind && ind.textContent === 'Syncing...') {
+      ind.textContent = 'Could not reach Sheets — showing local data';
+      ind.style.color = '#e05c5c';
+    }
+    refreshAll();
+  }, 8000);
+
+  /* JSONP callback — Google Apps Script calls this function with the data */
+  window._sheetsCallback = function(json) {
+    clearTimeout(timeout);
+    var indicator = document.getElementById('syncIndicator');
+    if (json && json.result === 'success' && Array.isArray(json.data)) {
+      _cache = json.data.map(function(row, i) {
+        return {
+          id:        'sheet_' + i,
+          name:      row[0] || '',
+          age:       row[1] || '',
+          contact:   row[2] || '',
+          email:     row[3] || '',
+          role:      row[4] || '',
+          heard:     row[5] || '',
+          access:    row[6] || '',
+          submitted: row[7] || ''
+        };
+      });
+      localStorage.setItem('vq4fs_local_data', JSON.stringify(_cache));
+      if (indicator) {
+        indicator.textContent = 'Synced — ' + _cache.length + ' record' + (_cache.length === 1 ? '' : 's') + ' loaded';
+        indicator.style.color = '#4caf50';
       }
-      refreshAll();
-    })
-    .catch(function(err) {
-      console.warn('Sheets fetch failed:', err);
-      if (indicator) { indicator.textContent = 'Could not reach Sheets — showing local data'; indicator.style.color = '#e05c5c'; }
-      refreshAll();
-    });
+    } else {
+      if (indicator) { indicator.textContent = 'No data returned from Sheets'; indicator.style.color = '#e05c5c'; }
+    }
+    refreshAll();
+  };
+
+  /* Inject script tag — this is the JSONP request */
+  var script = document.createElement('script');
+  script.id = 'sheets-jsonp';
+  script.src = SHEETS_URL + '?callback=_sheetsCallback';
+  script.onerror = function() {
+    clearTimeout(timeout);
+    var ind = document.getElementById('syncIndicator');
+    if (ind) { ind.textContent = 'Sheets unavailable — using local data'; ind.style.color = '#e05c5c'; }
+    refreshAll();
+  };
+  document.head.appendChild(script);
 }
 
 
