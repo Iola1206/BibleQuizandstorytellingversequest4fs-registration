@@ -6,11 +6,7 @@
   <title>VerseQuest4Fs — Pilot Registration</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
-    :root {
-      --navy:#1B3A6B;--navy-deep:#0F2347;--gold:#C9A84C;--gold-light:#F0D080;
-      --gold-pale:#FDF6E3;--cream:#FAFAF5;--ink:#2A2A2A;--muted:#6B6B6B;
-      --border:#D8CCB0;--error:#B83232;--white:#FFFFFF;
-    }
+    :root{--navy:#1B3A6B;--navy-deep:#0F2347;--gold:#C9A84C;--gold-light:#F0D080;--gold-pale:#FDF6E3;--cream:#FAFAF5;--ink:#2A2A2A;--muted:#6B6B6B;--border:#D8CCB0;--error:#B83232;--white:#FFFFFF;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--navy-deep);background-image:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.08) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(27,58,107,.6) 0%,transparent 55%);min-height:100vh;font-family:'Crimson Pro',Georgia,serif;color:var(--ink);padding:40px 20px 80px;}
     .page-wrapper{max-width:720px;margin:0 auto;}
@@ -157,12 +153,12 @@
           <label class="form-label">2. Age Group <span class="req">*</span></label>
           <span class="form-hint">Select the group that best describes you</span>
           <div class="options-grid" id="ageGroupGrid">
-            <label class="option-label"><input type="radio" name="ageGroup" value="Child (under 12)" onchange="clearGrpErr('ageGroupGrid','ageGroupErr')"/> Child (under 12)</label>
-            <label class="option-label"><input type="radio" name="ageGroup" value="Teenager (12-17)" onchange="clearGrpErr('ageGroupGrid','ageGroupErr')"/> Teenager (12&ndash;17)</label>
-            <label class="option-label"><input type="radio" name="ageGroup" value="Young Adult (18-30)" onchange="clearGrpErr('ageGroupGrid','ageGroupErr')"/> Young Adult (18&ndash;30)</label>
-            <label class="option-label"><input type="radio" name="ageGroup" value="Adult (31-60)" onchange="clearGrpErr('ageGroupGrid','ageGroupErr')"/> Adult (31&ndash;60)</label>
-            <label class="option-label"><input type="radio" name="ageGroup" value="Senior (61 and above)" onchange="clearGrpErr('ageGroupGrid','ageGroupErr')"/> Senior (61 and above)</label>
-            <label class="option-label"><input type="radio" name="ageGroup" value="Prefer not to say" onchange="clearGrpErr('ageGroupGrid','ageGroupErr')"/> Prefer not to say</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Child (under 12)" onchange="clearGE('ageGroupGrid','ageGroupErr')"/> Child (under 12)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Teenager (12-17)" onchange="clearGE('ageGroupGrid','ageGroupErr')"/> Teenager (12&ndash;17)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Young Adult (18-30)" onchange="clearGE('ageGroupGrid','ageGroupErr')"/> Young Adult (18&ndash;30)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Adult (31-60)" onchange="clearGE('ageGroupGrid','ageGroupErr')"/> Adult (31&ndash;60)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Senior (61 and above)" onchange="clearGE('ageGroupGrid','ageGroupErr')"/> Senior (61 and above)</label>
+            <label class="option-label"><input type="radio" name="ageGroup" value="Prefer not to say" onchange="clearGE('ageGroupGrid','ageGroupErr')"/> Prefer not to say</label>
           </div>
           <span class="error-msg" id="ageGroupErr">Please select your age group.</span>
         </div>
@@ -189,14 +185,14 @@
           <label class="form-label">5. How Did You Hear About Us? <span class="req">*</span></label>
           <span class="form-hint">Select all that apply</span>
           <div class="options-grid" id="hearAboutGrid">
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Friend or family member" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Friend or family member</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Church announcement" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Church announcement</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Facebook" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Social media (Facebook)</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Instagram" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Social media (Instagram)</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="WhatsApp message" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> WhatsApp message</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Community notice board" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Community notice board</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Church newsletter" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Church newsletter or bulletin</label>
-            <label class="option-label"><input type="checkbox" name="hearAbout" value="Other" onchange="clearGrpErr('hearAboutGrid','hearAboutErr')"/> Other</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Friend or family member" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Friend or family member</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Church announcement" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Church announcement</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Facebook" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Social media (Facebook)</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Instagram" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Social media (Instagram)</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="WhatsApp message" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> WhatsApp message</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Community notice board" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Community notice board</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Church newsletter" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Church newsletter or bulletin</label>
+            <label class="option-label"><input type="checkbox" name="hearAbout" value="Other" onchange="clearGE('hearAboutGrid','hearAboutErr')"/> Other</label>
           </div>
           <span class="error-msg" id="hearAboutErr">Please select at least one option.</span>
         </div>
@@ -205,10 +201,10 @@
           <label class="form-label">6. I Would Like to Register As <span class="req">*</span></label>
           <span class="form-hint">Participant places are limited to 24 &mdash; the countdown only applies to competing members</span>
           <div class="options-grid single-col" id="roleGrid">
-            <label class="option-label participant-opt"><input type="radio" name="role" value="Participant" onchange="clearGrpErr('roleGrid','roleErr')"/> A participant (competing member) &mdash; <em>counts toward the 24 places</em></label>
-            <label class="option-label"><input type="radio" name="role" value="Volunteer" onchange="clearGrpErr('roleGrid','roleErr')"/> A volunteer helper / organiser</label>
-            <label class="option-label"><input type="radio" name="role" value="Judge" onchange="clearGrpErr('roleGrid','roleErr')"/> A storytelling judge</label>
-            <label class="option-label"><input type="radio" name="role" value="Not sure" onchange="clearGrpErr('roleGrid','roleErr')"/> Not sure yet &mdash; please keep me informed</label>
+            <label class="option-label participant-opt"><input type="radio" name="role" value="Participant" onchange="clearGE('roleGrid','roleErr')"/> A participant (competing member) &mdash; <em>counts toward the 24 places</em></label>
+            <label class="option-label"><input type="radio" name="role" value="Volunteer" onchange="clearGE('roleGrid','roleErr')"/> A volunteer helper / organiser</label>
+            <label class="option-label"><input type="radio" name="role" value="Judge" onchange="clearGE('roleGrid','roleErr')"/> A storytelling judge</label>
+            <label class="option-label"><input type="radio" name="role" value="Not sure" onchange="clearGE('roleGrid','roleErr')"/> Not sure yet &mdash; please keep me informed</label>
           </div>
           <span class="error-msg" id="roleErr">Please select how you would like to be involved.</span>
         </div>
@@ -238,14 +234,14 @@
           <span class="error-msg" id="consentErr">You must agree to the declaration before submitting.</span>
         </div>
 
-        <div class="validation-summary" id="validationSummary">
+        <div class="validation-summary" id="valSummary">
           <strong>Please correct the following before submitting:</strong>
-          <ul id="summaryList"></ul>
+          <ul id="valList"></ul>
         </div>
 
         <div class="submit-wrap">
           <button type="submit" class="submit-btn" id="submitBtn">Submit Registration</button>
-          <p class="submit-note">Your details will be sent securely to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a7d1c2d5d4c2d6d2c2d4d393c1d4e7c0cac6cecb89c4c8ca">[email&#160;protected]</a></p>
+          <p class="submit-note">Your details will be sent securely to versequest4fs@gmail.com</p>
         </div>
 
         <div class="sending-overlay" id="sendingOverlay">
@@ -259,7 +255,7 @@
       <div class="success-icon">&#127881;</div>
       <h2>Registration Received!</h2>
       <span class="success-name" id="successName"></span>
-      <p>Your registration has been successfully submitted and sent to the organiser at <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0573607776607470607671316376456268646c692b666a68">[email&#160;protected]</a></strong>.</p>
+      <p>Your registration has been successfully submitted and sent to the organiser at <strong>versequest4fs@gmail.com</strong>.</p>
       <div class="success-detail">
         <strong>What you have registered for:</strong>
         <ul>
@@ -280,7 +276,7 @@
     <div class="error-screen" id="errorScreen">
       <h3>Something Went Wrong</h3>
       <p>We could not send your registration automatically.</p>
-      <p>Please contact us directly: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="334556414056424656404707554073545e525a5f1d505c5e">[email&#160;protected]</a></strong></p>
+      <p>Please contact us directly at <strong>versequest4fs@gmail.com</strong></p>
       <p class="error-detail" id="errorDetail"></p>
       <button class="retry-btn" onclick="retryForm()">Try Again</button>
     </div>
@@ -292,222 +288,236 @@
   </div>
 </div>
 
-<!-- EmailJS loaded LAST so Cloudflare cannot interfere with it -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
-(function() {
-  /* Step 1: Load EmailJS by injecting a script tag programmatically */
-  var ejsScript = document.createElement('script');
-  ejsScript.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  ejsScript.type = 'text/javascript';
+<!--
+  NO external script tags here at all.
+  EmailJS is called via its REST API using fetch() — no SDK needed.
+  This completely eliminates the Cloudflare script injection problem permanently.
+  Cloudflare can only interfere with <script> tags — it cannot touch fetch() calls.
+-->
+<script>
+/* ════════════════════════════════════════════════════════
+   CONFIGURATION — update these if credentials change
+════════════════════════════════════════════════════════ */
+var CFG = {
+  ejs_user:     'Ryxf9h-oksj3HOpI1',   /* EmailJS public key  */
+  ejs_service:  'service_v1399st',       /* EmailJS service ID  */
+  ejs_template: 'template_q34vdae',     /* EmailJS template ID */
+  sheets_url:   'https://script.google.com/macros/s/AKfycbx0IYTl9IVfFQBYVdNQqX_UBLtMbHsR-9mz931MPdGUtyhEUApyLmJXr2GLKedBA4ORMA/exec',
+  max_spots:    24
+};
 
-  ejsScript.onload = function() {
-    /* Step 2: Initialise EmailJS only after it has fully loaded */
-    try {
-      emailjs.init({ publicKey: 'Ryxf9h-oksj3HOpI1' });
-      console.log('EmailJS ready');
-    } catch(err) {
-      console.error('EmailJS init failed:', err);
-    }
-  };
-
-  ejsScript.onerror = function() {
-    console.error('EmailJS script failed to load from CDN');
-  };
-
-  document.body.appendChild(ejsScript);
-})();
-
-/* ── CONFIGURATION ── */
-var EJS_SVC    = 'service_v1399st';
-var EJS_TPL    = 'template_q34vdae';
-var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx0IYTl9IVfFQBYVdNQqX_UBLtMbHsR-9mz931MPdGUtyhEUApyLmJXr2GLKedBA4ORMA/exec';
-var MAX_SPOTS  = 24;
-
-/* ── SPOTS ── */
-function getSpotsUsed() { return parseInt(localStorage.getItem('vq4f_spots') || '0', 10); }
-function incrementSpots() { var u = getSpotsUsed()+1; localStorage.setItem('vq4f_spots', String(u)); return u; }
-function updateSpotsUI(used) {
-  var rem = Math.max(0, MAX_SPOTS - used);
+/* ════════════════════════════════════════════════════════
+   SPOTS COUNTER
+════════════════════════════════════════════════════════ */
+function spotsUsed()  { return parseInt(localStorage.getItem('vq4f_spots') || '0', 10); }
+function addSpot()    { var u=spotsUsed()+1; localStorage.setItem('vq4f_spots',String(u)); return u; }
+function refreshSpots(used) {
+  var rem = Math.max(0, CFG.max_spots - used);
   document.getElementById('spotsCount').textContent = String(rem);
-  document.getElementById('spotsFill').style.width = Math.min(100,(used/MAX_SPOTS)*100)+'%';
+  document.getElementById('spotsFill').style.width  = Math.min(100,(used/CFG.max_spots)*100)+'%';
   var urg = document.getElementById('spotsUrgency');
-  urg.textContent = rem === 0 ? 'All participant places are now full!' : rem <= 5 ? 'Almost full — only '+rem+' place'+(rem===1?'':'s')+' left!' : '';
+  urg.textContent = rem===0 ? 'All participant places are now full!' : rem<=5 ? 'Almost full — only '+rem+' place'+(rem===1?'':'s')+' left!' : '';
 }
-updateSpotsUI(getSpotsUsed());
+refreshSpots(spotsUsed());
 
-/* ── LIVE VALIDATION ── */
+/* ════════════════════════════════════════════════════════
+   LIVE VALIDATION HELPERS
+════════════════════════════════════════════════════════ */
 function liveValidateName() {
-  var v = document.getElementById('fullName').value;
-  document.getElementById('nameCounter').textContent = v.length+' / 80';
-  document.getElementById('nameCounter').classList.toggle('warn', v.length > 70);
-  if (v.trim().length >= 2) { document.getElementById('fullName').classList.remove('field-error'); document.getElementById('fullNameErr').classList.remove('visible'); }
+  var v=document.getElementById('fullName').value;
+  document.getElementById('nameCounter').textContent=v.length+' / 80';
+  document.getElementById('nameCounter').classList.toggle('warn',v.length>70);
+  if(v.trim().length>=2){document.getElementById('fullName').classList.remove('field-error');document.getElementById('fullNameErr').classList.remove('visible');}
 }
 function liveValidateContact() {
-  var d = document.getElementById('contactNo').value.replace(/[\s\-().+]/g,'');
-  if (d.length >= 10 && /^\d+$/.test(d)) { document.getElementById('contactNo').classList.remove('field-error'); document.getElementById('contactNoErr').classList.remove('visible'); }
+  var d=document.getElementById('contactNo').value.replace(/[\s\-().+]/g,'');
+  if(d.length>=10&&/^\d+$/.test(d)){document.getElementById('contactNo').classList.remove('field-error');document.getElementById('contactNoErr').classList.remove('visible');}
 }
 function liveValidateEmail() {
-  var v = document.getElementById('userEmail').value.trim();
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { document.getElementById('userEmail').classList.remove('field-error'); document.getElementById('emailErr').classList.remove('visible'); }
+  var v=document.getElementById('userEmail').value.trim();
+  if(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){document.getElementById('userEmail').classList.remove('field-error');document.getElementById('emailErr').classList.remove('visible');}
 }
-function clearGrpErr(gId, eId) { document.getElementById(gId).classList.remove('group-error'); document.getElementById(eId).classList.remove('visible'); }
-function clearConsentErr() { document.getElementById('consentErr').classList.remove('visible'); document.getElementById('consentLabel').style.borderColor='var(--gold)'; }
+function clearGE(gId,eId){document.getElementById(gId).classList.remove('group-error');document.getElementById(eId).classList.remove('visible');}
+function clearConsentErr(){document.getElementById('consentErr').classList.remove('visible');document.getElementById('consentLabel').style.borderColor='var(--gold)';}
 
-/* ── FULL VALIDATION ── */
+/* ════════════════════════════════════════════════════════
+   FULL FORM VALIDATION
+════════════════════════════════════════════════════════ */
 function validateAll() {
-  var valid = true; var errors = [];
-  function se(id) { document.getElementById(id).classList.add('visible'); }
-  function he(id) { document.getElementById(id).classList.remove('visible'); }
-  function me(id) { document.getElementById(id).classList.add('field-error'); }
-  function ce(id) { document.getElementById(id).classList.remove('field-error'); }
+  var ok=true; var errs=[];
+  function se(id){document.getElementById(id).classList.add('visible');}
+  function he(id){document.getElementById(id).classList.remove('visible');}
+  function me(id){document.getElementById(id).classList.add('field-error');}
+  function ce(id){document.getElementById(id).classList.remove('field-error');}
 
-  var name = document.getElementById('fullName').value.trim();
-  if (name.length < 2) { me('fullName'); se('fullNameErr'); errors.push('Full name is required'); valid=false; } else { ce('fullName'); he('fullNameErr'); }
+  var name=document.getElementById('fullName').value.trim();
+  if(name.length<2){me('fullName');se('fullNameErr');errs.push('Full name is required');ok=false;}else{ce('fullName');he('fullNameErr');}
 
-  var age = document.querySelector('input[name="ageGroup"]:checked');
-  if (!age) { document.getElementById('ageGroupGrid').classList.add('group-error'); se('ageGroupErr'); errors.push('Age group must be selected'); valid=false; } else { document.getElementById('ageGroupGrid').classList.remove('group-error'); he('ageGroupErr'); }
+  var age=document.querySelector('input[name="ageGroup"]:checked');
+  if(!age){document.getElementById('ageGroupGrid').classList.add('group-error');se('ageGroupErr');errs.push('Age group must be selected');ok=false;}else{document.getElementById('ageGroupGrid').classList.remove('group-error');he('ageGroupErr');}
 
-  var contact = document.getElementById('contactNo').value.trim();
-  var digits = contact.replace(/[\s\-().+]/g,'');
-  if (digits.length < 10 || !/^\d+$/.test(digits)) { me('contactNo'); se('contactNoErr'); errors.push('A valid contact number is required'); valid=false; } else { ce('contactNo'); he('contactNoErr'); }
+  var contact=document.getElementById('contactNo').value.trim();
+  var digits=contact.replace(/[\s\-().+]/g,'');
+  if(digits.length<10||!/^\d+$/.test(digits)){me('contactNo');se('contactNoErr');errs.push('A valid contact number is required');ok=false;}else{ce('contactNo');he('contactNoErr');}
 
-  var email = document.getElementById('userEmail').value.trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { me('userEmail'); se('emailErr'); errors.push('A valid email address is required'); valid=false; } else { ce('userEmail'); he('emailErr'); }
+  var email=document.getElementById('userEmail').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){me('userEmail');se('emailErr');errs.push('A valid email address is required');ok=false;}else{ce('userEmail');he('emailErr');}
 
-  var heardEls = document.querySelectorAll('input[name="hearAbout"]:checked');
-  var heard = Array.prototype.map.call(heardEls, function(i){ return i.value; });
-  if (heard.length === 0) { document.getElementById('hearAboutGrid').classList.add('group-error'); se('hearAboutErr'); errors.push('Please tell us how you heard about us'); valid=false; } else { document.getElementById('hearAboutGrid').classList.remove('group-error'); he('hearAboutErr'); }
+  var heardEls=document.querySelectorAll('input[name="hearAbout"]:checked');
+  var heard=Array.prototype.map.call(heardEls,function(i){return i.value;});
+  if(heard.length===0){document.getElementById('hearAboutGrid').classList.add('group-error');se('hearAboutErr');errs.push('Please tell us how you heard about us');ok=false;}else{document.getElementById('hearAboutGrid').classList.remove('group-error');he('hearAboutErr');}
 
-  var role = document.querySelector('input[name="role"]:checked');
-  if (!role) { document.getElementById('roleGrid').classList.add('group-error'); se('roleErr'); errors.push('Please select how you would like to be involved'); valid=false; } else { document.getElementById('roleGrid').classList.remove('group-error'); he('roleErr'); }
+  var role=document.querySelector('input[name="role"]:checked');
+  if(!role){document.getElementById('roleGrid').classList.add('group-error');se('roleErr');errs.push('Please select how you would like to be involved');ok=false;}else{document.getElementById('roleGrid').classList.remove('group-error');he('roleErr');}
 
-  var consent = document.getElementById('consent').checked;
-  if (!consent) { se('consentErr'); document.getElementById('consentLabel').style.borderColor='var(--error)'; errors.push('You must agree to the declaration'); valid=false; } else { he('consentErr'); document.getElementById('consentLabel').style.borderColor='var(--gold)'; }
+  var consent=document.getElementById('consent').checked;
+  if(!consent){se('consentErr');document.getElementById('consentLabel').style.borderColor='var(--error)';errs.push('You must agree to the declaration');ok=false;}else{he('consentErr');document.getElementById('consentLabel').style.borderColor='var(--gold)';}
 
-  var sumEl = document.getElementById('validationSummary');
-  if (!valid) { document.getElementById('summaryList').innerHTML=errors.map(function(e){return '<li>'+e+'</li>';}).join(''); sumEl.classList.add('visible'); } else { sumEl.classList.remove('visible'); }
+  var sumEl=document.getElementById('valSummary');
+  if(!ok){document.getElementById('valList').innerHTML=errs.map(function(e){return '<li>'+e+'</li>';}).join('');sumEl.classList.add('visible');}else{sumEl.classList.remove('visible');}
 
-  return { valid:valid, name:name, age:age?age.value:'', contact:contact, email:email, heard:heard.join(', '), role:role?role.value:'', accessibility:document.getElementById('accessibility').value.trim() };
+  return {ok:ok,name:name,age:age?age.value:'',contact:contact,email:email,heard:heard.join(', '),role:role?role.value:'',access:document.getElementById('accessibility').value.trim()};
 }
 
-/* ── SEND TO GOOGLE SHEETS (fire and forget) ── */
+/* ════════════════════════════════════════════════════════
+   SEND EMAIL VIA EMAILJS REST API
+   Uses fetch() to call the EmailJS API directly.
+   No <script> tag needed — Cloudflare CANNOT interfere.
+════════════════════════════════════════════════════════ */
+function sendEmail(templateParams) {
+  return fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      service_id:  CFG.ejs_service,
+      template_id: CFG.ejs_template,
+      user_id:     CFG.ejs_user,
+      template_params: templateParams
+    })
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   SEND TO GOOGLE SHEETS via hidden iframe POST
+   Browsers allow cross-origin form submissions — no CORS issue.
+════════════════════════════════════════════════════════ */
 function sendToSheets(data) {
   try {
-    /*
-      Google Apps Script blocks XHR with application/json from external domains.
-      The reliable workaround is to POST via a hidden form targeting a hidden iframe.
-      Browsers allow cross-origin form submissions — no CORS restriction applies.
-    */
-    var iframe = document.createElement('iframe');
-    iframe.name = 'sheets_target';
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
+    var ifr = document.createElement('iframe');
+    ifr.name = 'vq4f_sink';
+    ifr.style.cssText = 'display:none;width:0;height:0;border:0;';
+    document.body.appendChild(ifr);
 
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = SHEETS_URL;
-    form.target = 'sheets_target';
-    form.style.display = 'none';
+    var frm = document.createElement('form');
+    frm.method = 'POST';
+    frm.action = CFG.sheets_url;
+    frm.target = 'vq4f_sink';
+    frm.style.display = 'none';
 
-    /* Append all data fields as hidden inputs */
-    Object.keys(data).forEach(function(key) {
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = data[key] || '';
-      form.appendChild(input);
+    Object.keys(data).forEach(function(k) {
+      var inp = document.createElement('input');
+      inp.type='hidden'; inp.name=k; inp.value=data[k]||'';
+      frm.appendChild(inp);
     });
 
-    document.body.appendChild(form);
-    form.submit();
-    console.log('Sheets: form submitted via iframe');
+    document.body.appendChild(frm);
+    frm.submit();
 
-    /* Clean up after 5 seconds */
-    setTimeout(function() {
-      if (form.parentNode) form.parentNode.removeChild(form);
-      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-    }, 5000);
-
-  } catch(err) { console.warn('Sheets: error', err); }
+    setTimeout(function(){
+      if(frm.parentNode) frm.parentNode.removeChild(frm);
+      if(ifr.parentNode) ifr.parentNode.removeChild(ifr);
+    }, 8000);
+  } catch(err) { console.warn('Sheets send error (non-critical):', err); }
 }
 
-/* ── FORM SUBMISSION ── */
+/* ════════════════════════════════════════════════════════
+   FORM SUBMISSION HANDLER
+════════════════════════════════════════════════════════ */
 document.getElementById('regForm').addEventListener('submit', function(ev) {
   ev.preventDefault();
 
-  var result = validateAll();
-  if (!result.valid) {
-    var firstErr = document.querySelector('.field-error, .error-msg.visible');
-    if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+  var r = validateAll();
+  if (!r.ok) {
+    var fe = document.querySelector('.field-error, .error-msg.visible');
+    if (fe) fe.scrollIntoView({behavior:'smooth',block:'center'});
     return;
   }
 
-  if (result.role === 'Participant' && getSpotsUsed() >= MAX_SPOTS) {
-    alert('We are sorry — all 24 participant places are now full.');
+  if (r.role==='Participant' && spotsUsed()>=CFG.max_spots) {
+    alert('We are sorry — all 24 participant places are now full. You are welcome to register as a volunteer, judge, or to be kept informed.');
     return;
   }
 
-  var submitBtn     = document.getElementById('submitBtn');
-  var sendingOverlay = document.getElementById('sendingOverlay');
-  submitBtn.disabled = true;
-  submitBtn.style.display = 'none';
-  sendingOverlay.style.display = 'block';
+  /* Show sending state */
+  var btn = document.getElementById('submitBtn');
+  var ov  = document.getElementById('sendingOverlay');
+  btn.disabled = true;
+  btn.style.display = 'none';
+  ov.style.display  = 'block';
 
-  var submittedAt = new Date().toLocaleString('en-GB', { dateStyle:'full', timeStyle:'short' });
+  var ts = new Date().toLocaleString('en-GB', {dateStyle:'full', timeStyle:'short'});
 
-  var templateParams = {
-    from_name:      result.name,
-    age_group:      result.age,
-    contact_number: result.contact,
-    user_email:     result.email,
-    heard_about:    result.heard,
-    role:           result.role,
-    accessibility:  result.accessibility || 'None stated',
-    submitted_at:   submittedAt,
+  /* 1. Send email via EmailJS REST API */
+  sendEmail({
+    from_name:      r.name,
+    age_group:      r.age,
+    contact_number: r.contact,
+    user_email:     r.email,
+    heard_about:    r.heard,
+    role:           r.role,
+    accessibility:  r.access || 'None stated',
+    submitted_at:   ts,
     to_email:       'versequest4fs@gmail.com'
-  };
-
-  /* Send email via EmailJS */
-  emailjs.send(EJS_SVC, EJS_TPL, templateParams)
-    .then(function(resp) {
-      console.log('EmailJS OK:', resp.status);
-
-      /* Also write to Google Sheet — non-blocking */
+  })
+  .then(function(resp) {
+    if (resp.status === 200) {
+      /* 2. Send to Google Sheets (fire and forget) */
       sendToSheets({
-        name:          result.name,
-        age:           result.age,
-        contact:       result.contact,
-        email:         result.email,
-        role:          result.role,
-        heard:         result.heard,
-        accessibility: result.accessibility || 'None stated',
-        submitted:     submittedAt
+        name:r.name, age:r.age, contact:r.contact, email:r.email,
+        role:r.role, heard:r.heard,
+        accessibility:r.access||'None stated', submitted:ts
       });
 
-      /* Update local spots counter */
-      var used = getSpotsUsed();
-      if (result.role === 'Participant') { used = incrementSpots(); updateSpotsUI(used); }
+      /* 3. Update spots counter */
+      var used = spotsUsed();
+      if (r.role==='Participant') { used=addSpot(); refreshSpots(used); }
 
-      /* Show success screen */
-      document.getElementById('regForm').style.display      = 'none';
-      sendingOverlay.style.display                          = 'none';
+      /* 4. Show success */
+      document.getElementById('regForm').style.display = 'none';
+      ov.style.display = 'none';
       var ss = document.getElementById('successScreen');
       ss.style.display = 'block';
-      document.getElementById('successName').textContent = 'Welcome, ' + result.name.split(' ')[0] + '!';
-      if (result.role === 'Participant') {
-        var rem = Math.max(0, MAX_SPOTS - used);
-        document.getElementById('successSpots').textContent = rem > 0
+      document.getElementById('successName').textContent = 'Welcome, '+r.name.split(' ')[0]+'!';
+      if (r.role==='Participant') {
+        var rem=Math.max(0,CFG.max_spots-used);
+        document.getElementById('successSpots').textContent = rem>0
           ? rem+' participant place'+(rem===1?'':'s')+' still available — share this with a friend!'
           : 'You took the last available participant place!';
       }
-      ss.scrollIntoView({ behavior:'smooth', block:'start' });
-    })
-    .catch(function(err) {
-      console.error('EmailJS error:', JSON.stringify(err));
-      sendingOverlay.style.display              = 'none';
-      submitBtn.style.display                   = 'inline-block';
-      submitBtn.disabled                        = false;
-      document.getElementById('regForm').style.display = 'none';
-      var detail = err && err.status ? 'Code: '+err.status+' — '+(err.text||'') : (err && err.message ? err.message : 'Unknown error');
-      document.getElementById('errorDetail').textContent = detail;
-      document.getElementById('errorScreen').style.display = 'bl
+      ss.scrollIntoView({behavior:'smooth',block:'start'});
+    } else {
+      throw new Error('EmailJS returned status '+resp.status);
+    }
+  })
+  .catch(function(err) {
+    console.error('Send error:', err);
+    ov.style.display = 'none';
+    btn.style.display = 'inline-block';
+    btn.disabled = false;
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('errorDetail').textContent = err && err.message ? err.message : 'Unknown error';
+    document.getElementById('errorScreen').style.display = 'block';
+    document.getElementById('errorScreen').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+});
+
+function retryForm() {
+  document.getElementById('regForm').style.display    = 'block';
+  document.getElementById('errorScreen').style.display = 'none';
+  document.getElementById('submitBtn').disabled        = false;
+  document.getElementById('submitBtn').style.display   = 'inline-block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
