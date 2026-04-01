@@ -245,7 +245,7 @@
 
         <div class="submit-wrap">
           <button type="submit" class="submit-btn" id="submitBtn">Submit Registration</button>
-          <p class="submit-note">Your details will be sent securely to versequest4fs@gmail.com</p>
+          <p class="submit-note">Your details will be sent securely to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a7d1c2d5d4c2d6d2c2d4d393c1d4e7c0cac6cecb89c4c8ca">[email&#160;protected]</a></p>
         </div>
 
         <div class="sending-overlay" id="sendingOverlay">
@@ -259,7 +259,7 @@
       <div class="success-icon">&#127881;</div>
       <h2>Registration Received!</h2>
       <span class="success-name" id="successName"></span>
-      <p>Your registration has been successfully submitted and sent to the organiser at <strong>versequest4fs@gmail.com</strong>.</p>
+      <p>Your registration has been successfully submitted and sent to the organiser at <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0573607776607470607671316376456268646c692b666a68">[email&#160;protected]</a></strong>.</p>
       <div class="success-detail">
         <strong>What you have registered for:</strong>
         <ul>
@@ -280,7 +280,7 @@
     <div class="error-screen" id="errorScreen">
       <h3>Something Went Wrong</h3>
       <p>We could not send your registration automatically.</p>
-      <p>Please contact us directly: <strong>versequest4fs@gmail.com</strong></p>
+      <p>Please contact us directly: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="334556414056424656404707554073545e525a5f1d505c5e">[email&#160;protected]</a></strong></p>
       <p class="error-detail" id="errorDetail"></p>
       <button class="retry-btn" onclick="retryForm()">Try Again</button>
     </div>
@@ -293,7 +293,7 @@
 </div>
 
 <!-- EmailJS loaded LAST so Cloudflare cannot interfere with it -->
-<script type="text/javascript">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
 (function() {
   /* Step 1: Load EmailJS by injecting a script tag programmatically */
   var ejsScript = document.createElement('script');
@@ -393,12 +393,41 @@ function validateAll() {
 /* ── SEND TO GOOGLE SHEETS (fire and forget) ── */
 function sendToSheets(data) {
   try {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', SHEETS_URL, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(data));
-    xhr.onload = function() { console.log('Sheets: row added'); };
-    xhr.onerror = function() { console.warn('Sheets: request failed (non-critical)'); };
+    /*
+      Google Apps Script blocks XHR with application/json from external domains.
+      The reliable workaround is to POST via a hidden form targeting a hidden iframe.
+      Browsers allow cross-origin form submissions — no CORS restriction applies.
+    */
+    var iframe = document.createElement('iframe');
+    iframe.name = 'sheets_target';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = SHEETS_URL;
+    form.target = 'sheets_target';
+    form.style.display = 'none';
+
+    /* Append all data fields as hidden inputs */
+    Object.keys(data).forEach(function(key) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = data[key] || '';
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    console.log('Sheets: form submitted via iframe');
+
+    /* Clean up after 5 seconds */
+    setTimeout(function() {
+      if (form.parentNode) form.parentNode.removeChild(form);
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }, 5000);
+
   } catch(err) { console.warn('Sheets: error', err); }
 }
 
@@ -481,18 +510,4 @@ document.getElementById('regForm').addEventListener('submit', function(ev) {
       document.getElementById('regForm').style.display = 'none';
       var detail = err && err.status ? 'Code: '+err.status+' — '+(err.text||'') : (err && err.message ? err.message : 'Unknown error');
       document.getElementById('errorDetail').textContent = detail;
-      document.getElementById('errorScreen').style.display = 'block';
-      document.getElementById('errorScreen').scrollIntoView({ behavior:'smooth', block:'center' });
-    });
-});
-
-function retryForm() {
-  document.getElementById('regForm').style.display    = 'block';
-  document.getElementById('errorScreen').style.display = 'none';
-  document.getElementById('submitBtn').disabled        = false;
-  document.getElementById('submitBtn').style.display   = 'inline-block';
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
-</script>
-</body>
-</html>
+      document.getElementById('errorScreen').style.display = 'bl
